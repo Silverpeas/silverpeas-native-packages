@@ -1,0 +1,6 @@
+tmp/
+debian/changelog
+debian/files
+silverpeas*.tar.gz
+jboss*.zip
+silverpeas*.deb

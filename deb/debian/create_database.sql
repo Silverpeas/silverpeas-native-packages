@@ -1,0 +1,3 @@
+CREATE USER silverpeas WITH PASSWORD :silver_pwd;
+CREATE DATABASE SilverpeasV5;
+GRANT ALL PRIVILEGES ON DATABASE SilverpeasV5 TO silverpeas;

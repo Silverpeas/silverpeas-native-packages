@@ -1,0 +1,3 @@
+/etc/init.d/silverpeas
+/etc/profile.d/silverpeas.sh
+/etc/profile.d/jboss.sh

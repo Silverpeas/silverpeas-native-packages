@@ -1,0 +1,52 @@
+#!/bin/bash
+# /etc/init.d/silverpeas
+#
+### BEGIN INIT INFO
+# Provides:          silverpeas
+# Required-Start:    $remote_fs $syslog $network openoffice
+# Required-Stop:     $remote_fs $syslog $network openoffice
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start the collaborative portal Silverpeas as a daemon at boot time
+### END INIT INFO
+
+NAME=silverpeas
+PRG_START=silverpeas_start_jboss.sh
+PRG_STOP=silverpeas_stop_jboss.sh
+
+export SILVERPEAS_HOME=/opt/silverpeas
+export JBOSS_HOME=/opt/silverpeas/jboss-6.1.0.Final
+PATH=/bin:/usr/bin:/sbin:/usr/sbin:$SILVERPEAS_HOME/bin
+
+DAEMON=/opt/silverpeas/bin/$PRG_START
+PIDFILE=/var/run/silverpeas.pid
+RUN_AS_USER=silverpeas
+
+. /lib/lsb/init-functions
+
+case $1 in
+  start)
+    echo
+    log_daemon_msg "Starting $NAME as a daemon"
+    sudo -E -u $RUN_AS_USER $SILVERPEAS_HOME/bin/$PRG_START >& /var/log/silverpeas.log
+    log_progress_msg "waiting for silverpeas to be started (around 5mn)..."
+    sleep 5m
+    pid=`ps ax | grep -i jboss | cut -d ' ' -f 2 | head -n 1`
+    echo $pid > $PIDFILE
+    echo
+    ;;
+  stop)
+    log_daemon_msg "Stopping $NAME as a daemon"
+    sudo -E -u $RUN_AS_USER $SILVERPEAS_HOME/bin/$PRG_STOP >& /dev/null
+    rm $PIDFILE
+    echo
+    ;;
+  status)
+    status_of_proc -p $PIDFILE java $NAME && exit 0 || exit $?
+    ;;
+  *)
+    log_action_msg "Usage: /etc/init.d/$NAME {start|stop|status}"
+    exit 1
+esac
+
+exit 0

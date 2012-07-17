@@ -1,0 +1,10 @@
+silverpeas: dir-or-file-in-opt
+
+# Ruby scripts
+#silverpeas: script-not-executable
+#silverpeas: wrong-path-for-interpreter
+
+# Java Service Wrapper
+# silverpeas: arch-independent-package-contains-binary-or-object
+# silverpeas: unstripped-binary-or-object
+# silverpeas: missing-dependency-on-libc
