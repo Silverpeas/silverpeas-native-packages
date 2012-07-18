@@ -4,20 +4,25 @@ set -e
 
 case "$1" in
     configure)
-    	
         if ! id silverpeas > /dev/null 2>&1 ; then
             adduser --system --home /opt/silverpeas --no-create-home \
-                --ingroup nogroup --disabled-password --shell /bin/bash \
+                --ingroup adm --disabled-password --shell /bin/bash \
                 silverpeas
             SILVER_PWD=`echo $RANDOM | sha1sum | sed "s| -||g" | tr -d " "`
-            sudo -u postgres psql -l -v silver_pwd="'$SILVER_PWD'" -f deb/debian/create_database.sql
-            sed "-s/@@silver_pwd@@/$SILVER_PWD/g" /opt/silverpeas/setup/settings/defaultConfig.properties > /opt/silverpeas/setup/settings/config.properties
+            echo "CREATE USER silverpeas WITH PASSWORD :silver_pwd; CREATE DATABASE silverpeas; GRANT ALL PRIVILEGES ON DATABASE silverpeas TO silverpeas;"  | sudo -u postgres psql -l -v silver_pwd="'$SILVER_PWD'" -f - 
+            sed "s/@@silver_pwd@@/$SILVER_PWD/g" /opt/silverpeas/setup/settings/defaultConfig.properties > /opt/silverpeas/setup/settings/config.properties
         fi
         rm /opt/silverpeas/setup/settings/defaultConfig.properties
         chown -R silverpeas:adm /opt/silverpeas
         chown -R silverpeas:adm /var/data/silverpeas
-        /opt/silverpeas/bin/SilverpeasSettings.sh
-        test $? -eq 0 && /opt/silverpeas/bin/dbBuilder.sh        
+        . /etc/profile.d/jboss.sh
+        . /etc/profile.d/silverpeas.sh
+        sudo -E -u silverpeas /opt/silverpeas/bin/SilverpeasSettings.sh
+        test $? -eq 0 && sudo -E -u silverpeas /opt/silverpeas/bin/dbBuilder.sh
+        chmod +x $SILVERPEAS_HOME/bin/*.sh
+        update-rc.d openoffice defaults
+        update-rc.d silverpeas defaults
+        service openoffice start
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)

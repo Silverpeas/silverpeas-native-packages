@@ -1,0 +1,4 @@
+[silverpeas]
+name=Silverpeas
+baseurl=http://www.silverpeas.org/files/rpm
+gpgcheck=0
