@@ -38,11 +38,10 @@ case $1 in
   stop)
     log_daemon_msg "Stopping $NAME as a daemon"
     sudo -E -u $RUN_AS_USER $SILVERPEAS_HOME/bin/$PRG_STOP >& /dev/null
-    rm $PIDFILE
     echo
     ;;
   status)
-    status_of_proc -p $PIDFILE java $NAME && exit 0 || exit $?
+    status_of_proc -p $PIDFILE java $NAME
     ;;
   *)
     log_action_msg "Usage: /etc/init.d/$NAME {start|stop|status}"

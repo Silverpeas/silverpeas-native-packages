@@ -6,6 +6,6 @@ Homepage: http://www.silverpeas.org/
 
 Package: silverpeas
 Architecture: all
-Depends: java2-runtime, adduser, postgresql
+Depends: java2-runtime, adduser, sudo, postgresql
 Suggests: default-jre-headless
 Description: Open platform to create a collaborative web site.

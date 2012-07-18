@@ -1,8 +1,9 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # Requires:
 #   app-arch/dpkg
 #   sys-apps/fakeroot
+#   text/dos2unix
 
 set -e
 
@@ -12,12 +13,18 @@ if [ -z "$1" ]; then
 fi
 
 VER=$1
+ROOT=`pwd`/tmp
+SILVERPEAS_HOME=${ROOT}/opt/silverpeas
+JBOSS_HOME=${SILVERPEAS_HOME}/jboss-6.1.0.Final
+SILVERPEAS_DATA=${ROOT}/var/data/silverpeas
+SILVERPEAS_DOC=${ROOT}/usr/share/doc/silverpeas
 
 # prepare fresh directories
-rm -rf tmp/
-mkdir -p tmp/DEBIAN/
-mkdir -p tmp/opt/
-mkdir -p tmp/var/data/silverpeas/import/
+rm -rf ${ROOT}
+mkdir -p ${ROOT}/DEBIAN
+mkdir -p ${ROOT}/opt
+mkdir -p ${SILVERPEAS_DATA}/import
+mkdir -p ${SILVERPEAS_DOC}
 
 # changelog
 DATE=`date -R`
@@ -31,58 +38,64 @@ echo "silverpeas (${VER}) unstable; urgency=low
 
 # prepare silverpeas
 tar xzf silverpeas-${VER}-jboss6.tar.gz
-mv silverpeas-${VER}-jboss6/ tmp/opt/silverpeas
+mv silverpeas-${VER}-jboss6/ ${SILVERPEAS_HOME}
 
 #prepare jboss
-unzip jboss-as-distribution-6.1.0.Final.zip -d tmp/opt/silverpeas/
+unzip jboss-as-distribution-6.1.0.Final.zip -d ${SILVERPEAS_HOME}/
 
 # Fix EOL in configuration files
-for i in tmp/opt/silverpeas/bin/*.sh; do
+for i in ${SILVERPEAS_HOME}/bin/*.sh; do
   echo "dos2unix $i"
   awk '{ sub("\r$", ""); print }' $i > $i.new
   mv $i.new $i
   chmod +x $i
 done
 
-cd tmp/opt/silverpeas/
-SILVERPEAS_HOME=`pwd`
-cd bin
+pushd ${SILVERPEAS_HOME}/bin
 mvn clean install
 ./appBuilder.sh
-cp -Rf ../data/* ../../../../../deb/tmp/var/data/silverpeas/
-cd ../../../../../deb
+cp -Rf ../data/* ${SILVERPEAS_DATA}/
+popd
+mv ${SILVERPEAS_HOME}/log/* log/
 
 # lintian overrides
 # mkdir -p tmp/usr/share/lintian/overrides/
 # cp -T debian/silverpeas.lintian-overrides tmp/usr/share/lintian/overrides/silverpeas
 
 # license
-mkdir -p tmp/usr/share/doc/silverpeas/
-cp debian/copyright tmp/usr/share/doc/silverpeas/
+cp debian/copyright ${SILVERPEAS_DOC}/
 
 # conffiles
-cp -T debian/conffiles tmp/DEBIAN/conffiles
+cp -T debian/conffiles ${ROOT}/DEBIAN/conffiles
 
-#configuration
-cp debian/config.properties tmp/opt/silverpeas/setup/settings/defaultConfig.properties
+# configuration
+cp debian/config.properties ${SILVERPEAS_HOME}/setup/settings/defaultConfig.properties
+
+# set java path
+for i in ${SILVERPEAS_HOME}/bin/*.sh; do
+  sed "s/\$JAVA_HOME/\/usr/g" $i > $i.new
+  mv $i.new $i
+  chmod +x $i
+done
 
 # init.d
-mkdir -p tmp/etc/init.d/
-cp -T debian/silverpeas.init tmp/etc/init.d/silverpeas
-chmod 755 tmp/etc/init.d/silverpeas
+mkdir -p ${ROOT}/etc/init.d/
+cp -T debian/silverpeas.init ${ROOT}/etc/init.d/silverpeas
+chmod 755 ${ROOT}/etc/init.d/silverpeas
+cp -T debian/openoffice.init ${ROOT}/etc/init.d/openoffice
+chmod 755 ${ROOT}/etc/init.d/openoffice
 
 #environment
-mkdir -p tmp/etc/profile.d/
-cp -T debian/silverpeas.sh tmp/etc/profile.d/silverpeas.sh
-cp -T debian/jboss.sh tmp/etc/profile.d/jboss.sh
-chmod 755 tmp/etc/init.d/silverpeas
+mkdir -p ${ROOT}/etc/profile.d/
+cp -T debian/silverpeas.sh ${ROOT}/etc/profile.d/silverpeas.sh
+cp -T debian/jboss.sh ${ROOT}/etc/profile.d/jboss.sh
 
 # postinst and postrm
-cp -T debian/silverpeas.postinst tmp/DEBIAN/postinst
-chmod 755 tmp/DEBIAN/postinst
-cp -T debian/silverpeas.postrm tmp/DEBIAN/postrm
-chmod 755 tmp/DEBIAN/postrm
+cp -T debian/silverpeas.postinst ${ROOT}/DEBIAN/postinst
+chmod 755 ${ROOT}/DEBIAN/postinst
+cp -T debian/silverpeas.postrm ${ROOT}/DEBIAN/postrm
+chmod 755 ${ROOT}/DEBIAN/postrm
 
 dpkg-gencontrol -Ptmp
 
-fakeroot dpkg-deb -b tmp silverpeas.deb
+fakeroot dpkg-deb -b ${ROOT} silverpeas.deb

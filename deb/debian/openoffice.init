@@ -1,0 +1,44 @@
+#!/bin/bash
+# /etc/init.d/openoffice
+#
+### BEGIN INIT INFO
+# Provides:          openoffice
+# Required-Start:    $remote_fs $syslog $network
+# Required-Stop:     $remote_fs $syslog $network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start OpenOffice/LibreOffice as a daemon at boot time
+### END INIT INFO
+
+NAME=OpenOffice/LibreOffice
+PRG_NAME=openoffice
+
+PATH=/bin:/usr/bin:/sbin:/usr/sbin:/usr/lib/$PRG_NAME/program
+
+DAEMON=/usr/lib/$PRG_NAME/program/soffice.bin
+PIDFILE=/var/run/$PRG_NAME.pid
+RUN_AS_USER=silverpeas
+
+. /lib/lsb/init-functions
+
+case $1 in
+  start)
+    log_daemon_msg "Starting $NAME as a daemon"
+    start-stop-daemon --start --quiet -c $RUN_AS_USER --background --pidfile $PIDFILE --exec $DAEMON -- -headless -nodefault -accept='socket,host=localhost,port=8100;urp'
+    log_end_msg $?
+    echo `pidof soffice.bin` > $PIDFILE
+    ;;
+  stop)
+    log_daemon_msg "Stopping $NAME as a daemon"
+    start-stop-daemon --stop --quiet -c $RUN_AS_USER --signal 15 --pidfile $PIDFILE
+    log_end_msg $?
+    ;;
+  status)
+    status_of_proc -p $PIDFILE $DAEMON $NAME
+    ;;
+  *)
+    log_action_msg "Usage: /etc/init.d/$PRG_NAME {start|stop|status}"
+    exit 1
+esac
+
+exit 0

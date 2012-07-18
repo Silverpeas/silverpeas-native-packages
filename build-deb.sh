@@ -2,6 +2,8 @@
 
 # Requires:
 #   app-arch/dpkg
+#   sys-apps/fakeroot
+#   text/dos2unix
 
 set -e
 
@@ -13,11 +15,11 @@ fi
 VER=$1
 
 echo "Building DEB package"
-rm -v deb/*.tar.gz || true
 silverpeasFile=silverpeas-${VER}-jboss6.tar.gz
 cd deb/
 if [ ! -e "$silverpeasFile" ]
 then
+  rm -v silverpeas-*.tar.gz || true
   wget  http://www.silverpeas.org/files/silverpeas-${VER}-jboss6.tar.gz
 fi
 if [ ! -e "jboss-as-distribution-6.1.0.Final.zip" ]

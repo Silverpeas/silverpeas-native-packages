@@ -5,9 +5,19 @@ set -e
 case "$1" in
     purge)
         userdel silverpeas || true
+        rm -rf /opt/silverpeas/setup/settings/config.properties
+        rm -rf /opt/silverpeas/log/*
+        rm -rf /opt/silverpeas/jboss-6.1.0.Final/server/default/log/*
+        rm -rf /opt/silverpeas/jboss-6.1.0.Final/server/default/lib/*
+        rm -rf /opt/silverpeas/jboss-6.1.0.Final/server/default/deploy/silverpeas
+        echo "DROP DATABASE silverpeas; DROP USER silverpeas" | sudo -u postgres psql -l -f -
     ;;
 
     remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+      service silverpeas stop
+      service openoffice stop
+      update-rc.d silverpeas remove
+      update-rc.d openoffice remove
     ;;
 
     *)

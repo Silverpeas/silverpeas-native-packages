@@ -1,3 +1,4 @@
 /etc/init.d/silverpeas
+/etc/init.d/openoffice
 /etc/profile.d/silverpeas.sh
 /etc/profile.d/jboss.sh
