@@ -1,4 +1,4 @@
-Application Builder Log File - BEGIN Wed Jul 18 12:00:51 CEST 2012
+Application Builder Log File - BEGIN Mon Jul 23 17:07:35 CEST 2012
 ------------------------------
 ___ Application Builder V5.0 ___
 
@@ -364,4 +364,4 @@ WARNING : could not delete "war-ic.war" from temporary space
 OK : "silverpeas.ear" successfully builded
 Please find them in "/home/mmoquillon/Projets/mmoqui-silverpeas/silverpeas-native-packages/deb/tmp/opt/silverpeas/jar"
 ------------------------------
-Application Builder Log File - END Wed Jul 18 12:01:01 CEST 2012
+Application Builder Log File - END Mon Jul 23 17:07:47 CEST 2012

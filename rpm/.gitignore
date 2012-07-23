@@ -1,4 +1,4 @@
-SOURCES/silverpeas*.tar.gz
+SOURCES/*
 BUILD/
 RPMS/
 SRPMS/

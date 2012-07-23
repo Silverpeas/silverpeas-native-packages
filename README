@@ -1,0 +1,17 @@
+This project aims to build Silverpeas into a DEB or a RPM packages for
+GNU/Linux systems.
+
+The main script is build.sh and it accepts as parameters the package to make
+(deb, rpm or all) and the version number of Silverpeas to build.
+It first downloads the Silverpeas installer and the JBoss application server
+distribution into the files/ directory so that they can be used by any
+packaging build.
+It then delegates the build to a more specific script: build-deb.sh for making a
+DEB package or build-rpm.sh for making a RPM package.
+
+Specific packaging instructions and Silverpeas setup files related to a
+GNU/Linux distribution type (Debian or RPM based distribution) are located in
+the packaging specific directory: deb/ for DEB packaging and rpm/ for RPM
+packaging.
+Common resources are located into the files/ directory.
+

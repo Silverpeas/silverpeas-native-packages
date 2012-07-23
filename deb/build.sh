@@ -3,7 +3,6 @@
 # Requires:
 #   app-arch/dpkg
 #   sys-apps/fakeroot
-#   text/dos2unix
 
 set -e
 
@@ -37,11 +36,11 @@ echo "silverpeas (${VER}) unstable; urgency=low
 " > debian/changelog
 
 # prepare silverpeas
-tar xzf silverpeas-${VER}-jboss6.tar.gz
-mv silverpeas-${VER}-jboss6/ ${SILVERPEAS_HOME}
+tar xzf ../files/silverpeas-${VER}-jboss6.tar.gz
+mv silverpeas-${VER}-jboss6 ${SILVERPEAS_HOME}
 
-#prepare jboss
-unzip jboss-as-distribution-6.1.0.Final.zip -d ${SILVERPEAS_HOME}/
+# prepare jboss
+unzip ../files/jboss-as-distribution-6.1.0.Final.zip -d ${SILVERPEAS_HOME}/
 
 # Fix EOL in configuration files
 for i in ${SILVERPEAS_HOME}/bin/*.sh; do
@@ -69,7 +68,7 @@ cp debian/copyright ${SILVERPEAS_DOC}/
 cp -T debian/conffiles ${ROOT}/DEBIAN/conffiles
 
 # configuration
-cp debian/config.properties ${SILVERPEAS_HOME}/setup/settings/defaultConfig.properties
+cp ../files/config.properties ${SILVERPEAS_HOME}/setup/settings/defaultConfig.properties
 
 # set java path
 for i in ${SILVERPEAS_HOME}/bin/*.sh; do
@@ -87,8 +86,8 @@ chmod 755 ${ROOT}/etc/init.d/openoffice
 
 #environment
 mkdir -p ${ROOT}/etc/profile.d/
-cp -T debian/silverpeas.sh ${ROOT}/etc/profile.d/silverpeas.sh
-cp -T debian/jboss.sh ${ROOT}/etc/profile.d/jboss.sh
+cp -T ../files/silverpeas.sh ${ROOT}/etc/profile.d/silverpeas.sh
+cp -T ../files/jboss.sh ${ROOT}/etc/profile.d/jboss.sh
 
 # postinst and postrm
 cp -T debian/silverpeas.postinst ${ROOT}/DEBIAN/postinst
