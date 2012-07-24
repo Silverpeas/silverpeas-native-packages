@@ -37,7 +37,7 @@ case $1 in
     log_end_msg $?
     ;;
   status)
-    status_of_proc -p $PIDFILE $DAEMON soffice.bin
+    status_of_proc -p $PIDFILE $DAEMON openoffice
     ;;
   *)
     log_action_msg "Usage: /etc/init.d/$PRG_NAME {start|stop|status}"

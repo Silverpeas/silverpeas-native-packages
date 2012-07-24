@@ -1,21 +1,22 @@
-#!/bin/bash
+#!/bin/sh
 
 set -e
 
 case "$1" in
     remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+      echo "Stop the running services..."
       service openoffice stop
-      if [ -e /var/run/silverpeas.pid ];
+      if [ -e /var/run/silverpeas.pid ]; then
         pid=`cat /var/run/silverpeas.pid`
         if [ "Z$pid" != "Z" ]; then
           pid1=`ps ax | grep -i jboss | tr -s ' ' | cut -d ' ' -f 1 | head -n 1`
           test "Z$pid1" = "Z" && pid1=`ps ax | grep -i jboss | tr -s ' ' | cut -d ' ' -f 2 | head -n 1`
           if [ $pid -eq $pid1 ]; then
-            echo "Waiting for Silverpeas shutdown..."
             service silverpeas stop
           fi
         fi
       fi
+      echo "Unregister the services..."
       update-rc.d silverpeas remove
       update-rc.d openoffice remove
     ;;

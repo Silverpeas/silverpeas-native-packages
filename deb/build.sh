@@ -89,9 +89,11 @@ mkdir -p ${ROOT}/etc/profile.d/
 cp -T ../files/silverpeas.sh ${ROOT}/etc/profile.d/silverpeas.sh
 cp -T ../files/jboss.sh ${ROOT}/etc/profile.d/jboss.sh
 
-# postinst and postrm
+# postinst, prerm and postrm
 cp -T debian/silverpeas.postinst ${ROOT}/DEBIAN/postinst
 chmod 755 ${ROOT}/DEBIAN/postinst
+cp -T debian/silverpeas.prerm ${ROOT}/DEBIAN/prerm
+chmod 755 ${ROOT}/DEBIAN/prerm
 cp -T debian/silverpeas.postrm ${ROOT}/DEBIAN/postrm
 chmod 755 ${ROOT}/DEBIAN/postrm
 

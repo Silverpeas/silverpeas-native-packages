@@ -4,7 +4,7 @@ set -e
 
 case "$1" in
     purge)
-        userdel -f silverpeas || true
+        userdel -f silverpeas &> /dev/null
         rm -rf /opt/silverpeas/setup/settings/config.properties
         rm -rf /opt/silverpeas/dbRepository
         rm -rf /opt/silverpeas/log/*
