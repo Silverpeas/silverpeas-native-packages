@@ -1,0 +1,78 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          openoffice
+# Required-Start:    $local_fs $remote_fs $network $time $named
+# Required-Stop:     $local_fs $remote_fs $network $time $named
+# Default-Start:     3 5
+# Default-Stop:      0 1 2 6
+# Short-Description: OpenOffice/LibreOffice Daemon
+# Description:       To Start OpenOffice or LibreOffice as a daemon
+### END INIT INFO
+
+NAME=openoffice
+SCRIPTNAME=/etc/init.d/$NAME
+
+if [ `id -u` -ne 0 ]; then
+  echo "The $NAME init script can only be run as root"
+  exit 1
+fi
+
+DAEMON=/usr/bin/soffice
+PIDFILE=/var/run/$NAME.pid
+RUN_AS_USER=silverpeas
+
+# source function library
+. /etc/rc.d/init.d/functions
+
+rh_status()
+{
+  do_status > /dev/null 2>&1
+}
+
+do_start()
+{
+  echo -n $"Starting $NAME: "
+  su - $RUN_AS_USER -c "$DAEMON -headless -nodefault -accept='socket,host=localhost,port=8100;urp'&"
+  echo `pidof soffice.bin` > $PIDFILE
+}
+
+do_stop()
+{
+  echo -n $"Stopping $NAME: "
+  killproc -p $PIDFILE soffice.bin -15
+}
+
+do_status()
+{
+  status -p $PIDFILE soffice.bin
+}
+
+do_restart()
+{
+  do_stop
+  do_start
+}
+
+case "$1" in
+  start)
+    rh_status && exit 0
+    do_start
+    ;;
+  stop)
+    rh_status || exit 0
+    do_stop
+    ;;
+  status)
+    do_status
+    ;;
+  restart|force-reload)
+    rh_status || exit 7
+    do_restart
+    ;;
+  *)
+    echo "Usage: $SCRIPTNAME {start|stop|status|restart|force-reload}" >&2
+    exit 3
+    ;;
+esac
+
+exit 0

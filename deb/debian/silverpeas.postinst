@@ -11,6 +11,7 @@ case "$1" in
             SILVER_PWD=`echo $RANDOM | sha1sum | sed "s| -||g" | tr -d " "`
             echo "CREATE USER silverpeas WITH PASSWORD :silver_pwd; CREATE DATABASE silverpeas; GRANT ALL PRIVILEGES ON DATABASE silverpeas TO silverpeas;"  | sudo -u postgres psql -l -v silver_pwd="'$SILVER_PWD'" -f - 
             sed "s/@@silver_pwd@@/$SILVER_PWD/g" /opt/silverpeas/setup/settings/defaultConfig.properties > /opt/silverpeas/setup/settings/config.properties
+            echo "/opt/silverpeas/setup/settings/config.properties generated"
         fi
         rm /opt/silverpeas/setup/settings/defaultConfig.properties
         chown -R silverpeas:adm /opt/silverpeas

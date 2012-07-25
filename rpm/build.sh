@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # Requires:
 #   app-arch/rpm
@@ -16,7 +16,7 @@ pushd $(dirname $0)
 
 # prepare fresh directories
 rm -rf BUILD RPMS SRPMS tmp || true
-mkdir -p BUILD RPMS SRPMS
+mkdir -p BUILD RPMS SRPMS 
 
 # build
-rpmbuild -ba --define="_topdir $PWD" --define="_tmppath $PWD/tmp" --define="ver $VER" SPECS/sonar.spec
+rpmbuild -ba --define="_topdir $PWD" --define="_root $PWD/tmp" --define="ver $VER" SPECS/silverpeas.spec

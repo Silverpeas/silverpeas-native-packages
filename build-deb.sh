@@ -1,9 +1,8 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # Requires:
 #   app-arch/dpkg
 #   sys-apps/fakeroot
-#   text/dos2unix
 
 set -e
 
@@ -15,19 +14,9 @@ fi
 VER=$1
 
 echo "Building DEB package"
-silverpeasFile=silverpeas-${VER}-jboss6.tar.gz
 cd deb/
-if [ ! -e "$silverpeasFile" ]
-then
-  rm -v silverpeas-*.tar.gz || true
-  wget  http://www.silverpeas.org/files/silverpeas-${VER}-jboss6.tar.gz
-fi
-if [ ! -e "jboss-as-distribution-6.1.0.Final.zip" ]
-then
-  wget http://download.jboss.org/jbossas/6.1/jboss-as-distribution-6.1.0.Final.zip
-fi
 ./build.sh ${VER}
-cd ..
+cd ../
 
 echo "Building DEB repository"
 cp -v deb/silverpeas.deb repo/deb/binary/silverpeas_${VER}_all.deb

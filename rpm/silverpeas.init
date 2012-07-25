@@ -1,0 +1,107 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          silverpeas
+# Required-Start:    $local_fs $remote_fs $network $time $named openoffice
+# Required-Stop:     $local_fs $remote_fs $network $time $named openoffice
+# Default-Start:     3 5
+# Default-Stop:      0 1 2 6
+# Short-Description: Silverpeas
+# Description:       Open platform to create a collaborative web site
+### END INIT INFO
+
+NAME=silverpeas
+SCRIPTNAME=/etc/init.d/$NAME
+
+if [ `id -u` -ne 0 ]; then
+  echo "The $NAME init script can only be run as root"
+  exit 1
+fi
+
+[ "Z$SILVERPEAS_HOME" = "Z" ] && export SILVERPEAS_HOME=/opt/silverpeas
+[ "Z$JBOSS_HOME" = "Z" ] && export JBOSS_HOME=opt/silverpeas/jboss-6.1.0.Final
+
+PRG_START=silverpeas_start_jboss.sh
+PRG_STOP=silverpeas_stop_jboss.sh
+PIDFILE=/var/run/silverpeas.pid
+RUN_AS_USER=silverpeas
+
+# source function library
+. /etc/rc.d/init.d/functions
+
+get_pid()
+{
+  f=1
+  PID=`ps ax | grep -i jboss | tr -s ' ' | cut -d ' ' -f $f | head -n 1`
+  if [ "Z$PID" = "Z" ]; then
+    f=2
+    PID=`ps ax | grep -i jboss | tr -s ' ' | cut -d ' ' -f $f | head -n 1`
+  fi
+  p=`ps ax | grep -i jboss | tr -s ' ' | cut -d ' ' -f $f | head -n 1`
+  test $PID -eq $p || PID=""
+}
+
+rh_status()
+{
+  do_status > /dev/null 2>&1
+}
+
+do_start()
+{
+  echo -n $"Starting $NAME: "
+  su - $RUN_AS_USER -c "$SILVERPEAS_HOME/bin/$PRG_START"
+  sleep 5s
+  get_pid
+  if [ "Z$PID" != "Z" ]; then
+    echo $PID > $PIDFILE
+    success
+  else
+    failure
+  fi
+}
+
+do_stop()
+{
+  echo -n $"Stopping $NAME"
+  su - $RUN_AS_USER -c "$SILVERPEAS_HOME/bin/$PRG_STOP"
+  get_pid
+  until [ "Z$PID" = "Z" ]; do
+    echo -n "."
+    sleep 5s
+    get_pid
+  done
+}
+
+do_status()
+{
+  status -p $PIDFILE $NAME
+}
+
+do_restart()
+{
+  do_stop
+  do_start
+}
+
+case "$1" in
+  start)
+    rh_status && exit 0
+    do_start
+    ;;
+  stop)
+    rh_status || exit 0
+    do_stop
+    ;;
+  status)
+    do_status
+    ;;
+  restart|force-reload)
+    rh_status || exit 7
+    do_restart
+    ;;
+  *)
+    echo "Usage: $SCRIPTNAME {start|stop|status|restart|force-reload}" >&2
+    exit 3
+    ;;
+esac
+
+exit 0

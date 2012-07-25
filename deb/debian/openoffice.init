@@ -25,16 +25,19 @@ case $1 in
   start)
     log_daemon_msg "Starting $NAME as a daemon"
     start-stop-daemon --start --quiet -c $RUN_AS_USER --background --pidfile $PIDFILE --exec $DAEMON -- -headless -nodefault -accept='socket,host=localhost,port=8100;urp'
+    sleep 1s
+    pid=`pidof soffice.bin` && echo $pid > $PIDFILE
     log_end_msg $?
-    echo `pidof soffice.bin` > $PIDFILE
     ;;
   stop)
     log_daemon_msg "Stopping $NAME as a daemon"
     start-stop-daemon --stop --quiet -c $RUN_AS_USER --signal 15 --pidfile $PIDFILE
+    pid=`pidof soffice.bin`
+    [ $? -ne 0 ]
     log_end_msg $?
     ;;
   status)
-    status_of_proc -p $PIDFILE $DAEMON $NAME
+    status_of_proc -p $PIDFILE $DAEMON openoffice
     ;;
   *)
     log_action_msg "Usage: /etc/init.d/$PRG_NAME {start|stop|status}"
