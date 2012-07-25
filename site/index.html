@@ -1,74 +1,111 @@
-<html>
-<head>
-<title>Silverpeas native packages</title>
-<link rel="icon" type="image/png" href="favicon.ico" />
-<style>
-  h2 { border-bottom: 1px solid black }
-  pre { padding:0.5em; margin:1em; background-color:black; color:white }
-</style>
-<script type="text/javascript">
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-2015926-3']);
-  _gaq.push(['_trackPageview']);
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+ <!-- Copyright (C) 2000 - 2011 Silverpeas
 
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-</script>
-</head>
-<body>
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
 
-<a href="http://github.com/ehsavoie/silverpeas-native-packages"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub" /></a>
+  As a special exception to the terms and conditions of version 3.0 of
+  the GPL, you may redistribute this Program in connection with Free/Libre
+  Open Source Software ("FLOSS") applications as described in Silverpeas's
+  FLOSS exception.  You should have recieved a copy of the text describing
+  the FLOSS exception, and it is also available here:
+  "http://www.silverpeas.com/legal/licensing"
 
-<h1>Silverpeas native packages</h1>
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
 
-Those packages install standalone version of <a href="http://www.silverpeas.org">Silverpeas</a> into "/opt/silverpeas" and provide init script, so it can be launched as:
-<pre>
-/etc/init.d/silverpeas start
-</pre>
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>. -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="Emmanuel Hugonnet" />
+    <meta name="Date-Revision-yyyymmdd" content="20120725" />
+    <meta http-equiv="Content-Language" content="en" />
+    <title>Silverpeas Native Packages</title>
+    <link rel="stylesheet" href="http://www.silverpeas.org/docs/core/css/apache-maven-fluido.min.css" />
+    <link rel="stylesheet" href="http://www.silverpeas.org/docs/core/css/site.css" />
+    <link rel="stylesheet" href="http://www.silverpeas.org/docs/core/css/print.css" media="print" />
+    <script type="text/javascript" src="http://www.silverpeas.org/docs/core/js/apache-maven-fluido.min.js"></script>
+    <script type="text/javascript">var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));</script>
+    <script type="text/javascript">try {
+                var pageTracker = _gat._getTracker("UA-2015926-3");
+                    pageTracker._trackPageview();
+                  } catch (err) {
+              }</script>
 
-<h2>Debian-based Linux distributions such as Ubuntu</h2>
+  </head>
+  <body >
+    <a href="http://github.com/ehsavoie/silverpeas-native-packages">
+      <img style="position: absolute; top: 0; right: 0; border: 0; z-index: 100;"
+           src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"
+           alt="Fork me on GitHub">
+    </a>
 
-<h3>APT</h3>
+    <div id="topbar" class="navbar navbar-fixed-top">
 
-Add the following entry in your /etc/apt/sources.list :
-<pre>
-deb http://www.silverpeas.org/repo/deb binary/
-</pre>
+    </div>
 
-Update your local package index and install Silverpeas:
-<pre>
+    <div class="container-fluid">
+      <div id="banner">
+        <div class="pull-left">
+          <a href="http://www.silverpeas.org/" id="bannerLeft"><img src="http://www.silverpeas.org/docs/core/images/logo-silverpeas.png"  alt="Silverpeas"/></a>
+        </div>
+        <div class="pull-right">  </div>
+        <div class="clear"><hr/></div>
+      </div>
+      <div id="breadcrumbs">     
+      </div>
+      <div class="row-fluid">
+        <div id="bodyColumn"  class="span10" >
+
+          <div class="section"><h2>Silverpeas native packages<a name="Silverpeas_native_packages"></a></h2>
+            <p>Those packages install standalone version of 
+              <a class="externalLink" href="http://www.silverpeas.org">Silverpeas</a> into <b>&quot;/opt/silverpeas&quot;</b> and provide init script, so it can be launched as: 
+            </p><div class="source"><pre class="prettyprint linenums">/etc/init.d/silverpeas start</pre></div>
+
+          </div>
+          <div class="section"><h2>Debian-based Linux distributions such as Ubuntu<a name="Debian-based_Linux_distributions_such_as_Ubuntu"></a></h2>
+            <div class="section"><h3>APT<a name="APT"></a></h3>
+              <p>Add the following entry in your <i>/etc/apt/sources.list</i>: </p><div class="source"><pre class="prettyprint linenums">deb http://www.silverpeas.org/repo/deb binary/</pre></div>
+              <p>Update your local package index and install Silverpeas:  
+              </p><div class="source"><pre class="prettyprint linenums">
 sudo apt-get update
 sudo apt-get install silverpeas
-</pre>
-
-<h2>RPM-based Linux distributions such as RedHat, Fedora, CentOS, openSUSE</h2>
-
-<h3>YUM</h3>
-
-Add repository:
-<pre>
-sudo wget -O /etc/yum.repos.d/silverpeas.repo http://www.silverpeas.org/repo/rpm/silverpeas.repo
-</pre>
-
-Install Silverpeas:
-<pre>
+                </pre></div>
+            </div>
+          </div>
+          <div class="section"><h2>RPM-based Linux distributions such as RedHat, Fedora, CentOS, openSUSE<a name="RPM-based_Linux_distributions_such_as_RedHat_Fedora_CentOS_openSUSE"></a></h2>
+            <div class="section"><h3>YUM<a name="YUM"></a></h3>
+              <p>Add repository: </p><div class="source"><pre class="prettyprint linenums">sudo wget -O /etc/yum.repos.d/silverpeas.repo http://www.silverpeas.org/repo/rpm/silverpeas.repo</pre></div>
+              <p>Install Silverpeas: 
+              </p><div class="source"><pre class="prettyprint linenums">
 yum install silverpeas
-</pre>
-
-<h3>Zypper</h3>
-
-Add repository:
-<pre>
-zypper addrepo http://www.silverpeas.org/repo/rpm silverpeas
-</pre>
-
-Install Silverpeas:
-<pre>
+                </pre></div>
+            </div><div class="section"><h3>Zypper<a name="Zypper"></a></h3>
+              <p>Add repository: </p><div class="source"><pre class="prettyprint linenums">zypper addrepo http://www.silverpeas.org/repo/rpm silverpeas</pre></div>
+              <p>Install Silverpeas: 
+              </p><div class="source"><pre class="prettyprint linenums">
 zypper install silverpeas
-</pre>
-
-</body>
+                </pre></div>
+            </div>
+          </div> 
+        </div>
+      </div>
+      <hr/>
+      <footer>
+        <div class="container-fluid">
+          <div class="row span12">Copyright &copy;                    2012
+            <a href="http://www.silverpeas.com">Silverpeas</a>.
+            All Rights Reserved.      
+          </div>
+        </div>
+      </footer>
+  </body>
 </html>
