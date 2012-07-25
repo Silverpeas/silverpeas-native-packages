@@ -14,7 +14,10 @@ fi
 VER=$1
 
 echo "Building RPM package"
-rm -v rpm/SOURCES/* || true
+if [ -e rpm/SOURCES ]; then
+  rm -rf rpm/SOURCES || true
+fi
+mkdir rpm/SOURCES
 cp -v files/* rpm/SOURCES/
 cp -v rpm/*.init rpm/SOURCES/
 rpm/build.sh ${VER}
