@@ -18,7 +18,7 @@ if [ `id -u` -ne 0 ]; then
 fi
 
 [ "Z$SILVERPEAS_HOME" = "Z" ] && export SILVERPEAS_HOME=/opt/silverpeas
-[ "Z$JBOSS_HOME" = "Z" ] && export JBOSS_HOME=opt/silverpeas/jboss-6.1.0.Final
+[ "Z$JBOSS_HOME" = "Z" ] && export JBOSS_HOME=/opt/silverpeas/jboss-6.1.0.Final
 
 PRG_START=silverpeas_start_jboss.sh
 PRG_STOP=silverpeas_stop_jboss.sh
