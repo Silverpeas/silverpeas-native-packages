@@ -23,6 +23,9 @@ cp -v rpm/*.init rpm/SOURCES/
 rpm/build.sh ${VER}
 
 echo "Building RPM repository"
+if [ ! -e "repo/rpm/noarch" ]; then
+	mkdir -p repo/rpm/noarch
+fi
 cp -v rpm/RPMS/noarch/* repo/rpm/noarch/
 cd repo
 createrepo -s sha rpm

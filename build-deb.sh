@@ -17,7 +17,9 @@ echo "Building DEB package"
 cd deb/
 ./build.sh ${VER}
 cd ../
-
+if [ ! -e "repo/deb/binary" ]; then
+	mkdir -p repo/deb/binary
+fi
 echo "Building DEB repository"
 cp -v deb/silverpeas.deb repo/deb/binary/silverpeas_${VER}_all.deb
 cd repo/deb/

@@ -55,6 +55,9 @@ mvn clean install
 ./appBuilder.sh
 cp -Rf ../data/* ${SILVERPEAS_DATA}/
 popd
+if [ ! -e "log" ]; then
+	mkdir log
+fi
 mv ${SILVERPEAS_HOME}/log/* log/
 
 # lintian overrides

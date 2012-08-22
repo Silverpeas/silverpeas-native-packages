@@ -24,7 +24,7 @@ Source6:	config.properties
 Provides: silverpeas
 #BuildRoot:	%{_root}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-#BuildRequires:	
+#BuildRequires: /usr/bin/mvn
 
 %if 0%{?suse_version}
 Requires: java = 1.6.0

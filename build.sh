@@ -30,7 +30,7 @@ fetch_sources()
   if [ ! -e "jboss-as-distribution-6.1.0.Final.zip" ]; then
     wget http://download.jboss.org/jbossas/6.1/jboss-as-distribution-6.1.0.Final.zip
   fi
-  cd ..
+  cd .. 
 }
 
 if [ $# -lt 2 ]; then
