@@ -138,6 +138,10 @@ fi
 %post
 if [ $1 -eq 1 ] ; then
   # this is a first installation as opposed to upgrade: create the database and generate the config.properties settings file
+  cat >> /var/lib/pgsql/data/pg_hba.conf << EOF
+host    silverpeas             silverpeas             127.0.0.1/32            md5
+host    silverpeas             silverpeas             ::1/128                 md5
+EOF
   SILVER_PWD=`echo $RANDOM | sha1sum | sed "s| -||g" | tr -d " "`
   echo "CREATE USER silverpeas WITH PASSWORD :silver_pwd; CREATE DATABASE silverpeas WITH ENCODING 'UTF-8'; GRANT ALL PRIVILEGES ON DATABASE silverpeas TO silverpeas;" | sudo -u postgres psql -l -v silver_pwd="'$SILVER_PWD'" -f -
   sed "s/@@silver_pwd@@/$SILVER_PWD/g" /opt/silverpeas/setup/settings/defaultConfig.properties > /opt/silverpeas/setup/settings/config.properties
