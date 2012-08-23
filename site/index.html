@@ -64,32 +64,34 @@
       </div>
       <div class="row-fluid">
         <div id="bodyColumn"  class="span10" >
-
           <div class="section"><h2>Silverpeas native packages<a name="Silverpeas_native_packages"></a></h2>
             <p>Those packages install standalone version of 
               <a class="externalLink" href="http://www.silverpeas.org">Silverpeas</a> into <b>&quot;/opt/silverpeas&quot;</b> and provide init script, so it can be launched as: 
-            </p><div class="source"><pre class="prettyprint linenums">/etc/init.d/silverpeas start</pre></div>
-            <p>or: </p><div class="source"><pre class="prettyprint linenums">service silverpeas start</pre></div>
+            </p><div class="source"><pre class="prettyprint">
+/etc/init.d/silverpeas start</pre></div>
+            <p>or: </p><div class="source"><pre class="prettyprint">
+service silverpeas start</pre></div>
+            <p>Since Silverpeas depends on <b>Postgresql</b> the installation will also install Postgresql server on your machine.<br />But installing Postgresql <b>may require some manual steps</b>:  you will find more documentation <a href="http://wiki.postgresql.org/wiki/Detailed_installation_guides" >here</a>.</p>
           </div>
           <div class="section"><h2>Debian-based Linux distributions such as Ubuntu<a name="Debian-based_Linux_distributions_such_as_Ubuntu"></a></h2>
             <div class="section"><h3>APT<a name="APT"></a></h3>
               <p>Add the following entry in your <i>/etc/apt/sources.list</i>: </p><div class="source"><pre class="prettyprint linenums">deb http://www.silverpeas.org/repo/deb binary/</pre></div>
               <p>Update your local package index and install Silverpeas:  
-              </p><div class="source"><pre class="prettyprint linenums">
+              </p><div class="source"><pre class="prettyprint">
 sudo apt-get update
 sudo apt-get install silverpeas</pre></div>
             </div>
           </div>
-          <div class="section"><h2>RPM-based Linux distributions such as RedHat, Fedora, CentOS, openSUSE<a name="RPM-based_Linux_distributions_such_as_RedHat_Fedora_CentOS_openSUSE"></a></h2>
+          <div class="section"><h2>RPM-based Linux distributions such as RedHat, Fedora, CentOS, openSUSE<a name="RPM-based_Linux_distributions_such_as_RedHat_Fedora_CentOS_openSUSE"></a></h2>            
             <div class="section"><h3>YUM<a name="YUM"></a></h3>
               <p>Add repository: </p><div class="source"><pre class="prettyprint linenums">sudo wget -O /etc/yum.repos.d/silverpeas.repo http://www.silverpeas.org/repo/rpm/silverpeas.repo</pre></div>
               <p>Install Silverpeas: 
-              </p><div class="source"><pre class="prettyprint linenums">
+              </p><div class="source"><pre class="prettyprint">
 yum install silverpeas</pre></div>
             </div><div class="section"><h3>Zypper<a name="Zypper"></a></h3>
-              <p>Add repository: </p><div class="source"><pre class="prettyprint linenums">zypper addrepo http://www.silverpeas.org/repo/rpm silverpeas</pre></div>
+              <p>Add repository: </p><div class="source"><pre class="prettyprint">zypper addrepo http://www.silverpeas.org/repo/rpm silverpeas</pre></div>
               <p>Install Silverpeas: 
-              </p><div class="source"><pre class="prettyprint linenums">
+              </p><div class="source"><pre class="prettyprint ">
 zypper install silverpeas</pre></div>
             </div>
           </div> 
