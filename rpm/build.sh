@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
 # Requires:
+#   app-arch/createrepo
 #   app-arch/rpm
+#   app-arch/rpm-build
 
 set -e
 

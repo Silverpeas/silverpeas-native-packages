@@ -44,7 +44,8 @@ Requires: libreoffice-headless
 %endif
 %endif
 
-Requires:	postgresql-server
+Requires:	postgresql >= 8.2
+Requires:	postgresql-server >= 8.2
 
 Requires(pre): %{_sbindir}/useradd
 Requires(post): %{_bindir}/sudo
@@ -57,6 +58,9 @@ Autoprov:	0
 Silverpeas is an open source web portal providing useful tools and
 applications to facilitate the collaboration between teams and
 individuals within an organization.
+It features document management, collaborative management, knowledge
+management, content management, connectors to data sources, and a
+transversal social network.
 
 # macro to stop and unregister the services, and to remove the silverpeas deployment
 # directory
@@ -128,7 +132,8 @@ done
 %pre
 if [ $1 -eq 1 ]; then
   # this is a first installation as opposed to upgrade: create the user silverpeas
-  /usr/sbin/useradd -g adm -s /bin/sh -r -d "/opt/silverpeas" silverpeas &>/dev/null || :
+  grep silverpeas /etc/password > /dev/null
+  test $? -eq 1 && /usr/sbin/useradd -g adm -s /bin/bash -r -d "/opt/silverpeas" silverpeas &>/dev/null || :
 elif [ $1 -eq 2 ]; then
   # this is an upgrade: remove the services of the previous installation
   %teardown
@@ -138,6 +143,7 @@ fi
 %post
 if [ $1 -eq 1 ] ; then
   # this is a first installation as opposed to upgrade: create the database and generate the config.properties settings file
+  test -f /var/lib/pgsql/data/pg_hba.conf || service postgresql initdb
   cat >> /var/lib/pgsql/data/pg_hba.conf << EOF
 host    silverpeas             silverpeas             127.0.0.1/32            md5
 host    silverpeas             silverpeas             ::1/128                 md5
@@ -154,6 +160,8 @@ EOF
   chown silverpeas:adm /opt/silverpeas/setup/settings/config.properties
 fi
 
+service postgresql status
+test $? -eq 0 || service postgresql start
 rm /opt/silverpeas/setup/settings/defaultConfig.properties
 . /etc/profile.d/jboss.sh
 . /etc/profile.d/silverpeas.sh

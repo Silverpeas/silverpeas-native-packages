@@ -15,8 +15,7 @@ print_usage()
   echo "Usage: $0 (deb|rpm|all) <version> \n\
 with:
   deb 	build a DEB package of Silverpeas
-  rpm 	build a RPM package of Silverpeas
-  all 	build both a DEB and a RPM package of Silverpeas"
+  rpm 	build a RPM package of Silverpeas"
 }
 
 fetch_sources()
@@ -46,10 +45,6 @@ case "$1" in
     ./build-deb.sh ${VER}
     ;;
   "rpm")
-    ./build-rpm.sh ${VER}
-    ;;
-  "all")
-    ./build-deb.sh ${VER}
     ./build-rpm.sh ${VER}
     ;;
   *)
