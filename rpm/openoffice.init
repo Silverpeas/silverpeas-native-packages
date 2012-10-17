@@ -32,14 +32,19 @@ rh_status()
 do_start()
 {
   echo -n $"Starting $NAME: "
-  su - $RUN_AS_USER -c "$DAEMON -headless -nodefault -accept='socket,host=localhost,port=8100;urp'&"
-  echo `pidof soffice.bin` > $PIDFILE
+  daemon --user $RUN_AS_USER --pidfile $PIDFILE "$DAEMON -headless -nodefault -accept='socket,host=localhost,port=8100;urp'&"
+  echo
+  sleep 1s
+  pidof soffice.bin >& /dev/null
+  test $? -eq 0 && echo `pidof soffice.bin` > $PIDFILE
 }
 
 do_stop()
 {
   echo -n $"Stopping $NAME: "
   killproc -p $PIDFILE soffice.bin -15
+  echo
+  rm -f $PIDFILE || true
 }
 
 do_status()

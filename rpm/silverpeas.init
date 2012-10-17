@@ -28,6 +28,11 @@ RUN_AS_USER=silverpeas
 # source function library
 . /etc/rc.d/init.d/functions
 
+if [ ! -f /var/log/silverpeas.log ]; then
+  touch /var/log/silverpeas.log
+  chown silverpeas:adm /var/log/silverpeas.log
+fi
+
 get_pid()
 {
   f=1
@@ -48,8 +53,8 @@ rh_status()
 do_start()
 {
   echo -n $"Starting $NAME: "
-  su - $RUN_AS_USER -c "$SILVERPEAS_HOME/bin/$PRG_START"
-  sleep 5s
+  su - $RUN_AS_USER -c "$SILVERPEAS_HOME/bin/$PRG_START &> /var/log/silverpeas.log"
+  sleep 10s
   get_pid
   if [ "Z$PID" != "Z" ]; then
     echo $PID > $PIDFILE
@@ -57,18 +62,22 @@ do_start()
   else
     failure
   fi
+  echo
 }
 
 do_stop()
 {
   echo -n $"Stopping $NAME"
-  su - $RUN_AS_USER -c "$SILVERPEAS_HOME/bin/$PRG_STOP"
+  su - $RUN_AS_USER -c "$SILVERPEAS_HOME/bin/$PRG_STOP &> /dev/null"
   get_pid
   until [ "Z$PID" = "Z" ]; do
     echo -n "."
     sleep 5s
     get_pid
   done
+  success
+  echo
+  rm -f $PIDFILE || true
 }
 
 do_status()

@@ -7,11 +7,15 @@
 set -e
 
 if [ -z "$1" ]; then
-  echo "Usage: $0 <version>"
+  echo "Usage: $0 <version> [<package version>]"
+  echo "If the package release isn't set, then it is set at 1 by default"
   exit 1
 fi
 
 VER=$1
+PKG_VER=$2
+test "Z$PKG_VER" == "Z" && PKG_VER=1
+
 ROOT=`pwd`/tmp
 SILVERPEAS_HOME=${ROOT}/opt/silverpeas
 JBOSS_HOME=${SILVERPEAS_HOME}/jboss-6.1.0.Final
