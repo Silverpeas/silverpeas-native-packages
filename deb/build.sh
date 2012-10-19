@@ -76,6 +76,14 @@ cp -T debian/conffiles ${ROOT}/DEBIAN/conffiles
 
 # configuration
 cp ../files/config.properties ${SILVERPEAS_HOME}/setup/settings/defaultConfig.properties
+res=0
+grep "app=silverpeas" ${SILVERPEAS_HOME}/bin/silverpeas_start_jboss.sh >& /dev/null || res=1
+if [ $res -ne 0 ]; then
+  sed 's/#export JBOSS_CLASSPATH/export JAVA_OPTS="-Dapp=silverpeas $JAVA_OPTS"/' ${SILVERPEAS_HOME}/bin/silverpeas_start_jboss.sh > silverpeas_start_jboss.sh.new
+  mv silverpeas_start_jboss.sh.new ${SILVERPEAS_HOME}/bin/silverpeas_start_jboss.sh
+  sed 's/#export JBOSS_CLASSPATH/export JAVA_OPTS="-Dapp=silverpeas $JAVA_OPTS"/' ${SILVERPEAS_HOME}/bin/silverpeas_debug_jboss.sh > silverpeas_debug_jboss.sh.new
+  mv silverpeas_debug_jboss.sh.new ${SILVERPEAS_HOME}/bin/silverpeas_debug_jboss.sh
+fi
 
 # set java path
 for i in ${SILVERPEAS_HOME}/bin/*.sh; do
@@ -104,6 +112,6 @@ chmod 755 ${ROOT}/DEBIAN/prerm
 cp -T debian/silverpeas.postrm ${ROOT}/DEBIAN/postrm
 chmod 755 ${ROOT}/DEBIAN/postrm
 
-dpkg-gencontrol -Ptmp
+dpkg-gencontrol -v"${VER}-${PKG_VER}" -Ptmp
 
-fakeroot dpkg-deb -b ${ROOT} silverpeas.deb
+fakeroot dpkg-deb -b ${ROOT} silverpeas_${VER}-${PKG_VER}_all.deb

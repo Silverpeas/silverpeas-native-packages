@@ -1,7 +1,5 @@
 #!/bin/sh
 
-set -e
-
 case "$1" in
     remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
       echo "Stop the running services..."

@@ -1,4 +1,0 @@
-[silverpeas]
-name=Silverpeas
-baseurl=http://www.silverpeas.org/repo/rpm
-gpgcheck=0

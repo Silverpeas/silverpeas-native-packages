@@ -12,6 +12,7 @@
 
 NAME=OpenOffice/LibreOffice
 PRG_NAME=openoffice
+test -e /usr/lib/$PRG_NAME || PRG_NAME=libreoffice
 
 PATH=/bin:/usr/bin:/sbin:/usr/sbin:/usr/lib/$PRG_NAME/program
 

@@ -22,14 +22,15 @@ RUN_AS_USER=silverpeas
 . /lib/lsb/init-functions
 
 get_pid() {
+  PID=
+  pj=`pidof java`
+  test $? -eq 0 || return 1
   f=1
-  PID=`ps ax | grep -i jboss | tr -s ' ' | cut -d ' ' -f $f | head -n 1`
+  PID=`ps ax | grep $pj | grep silverpeas | tr -s ' ' | cut -d ' ' -f $f`
   if [ "Z$PID" = "Z" ]; then
     f=2
-    PID=`ps ax | grep -i jboss | tr -s ' ' | cut -d ' ' -f $f | head -n 1`
+    PID=`ps ax | grep $pj | grep silverpeas | tr -s ' ' | cut -d ' ' -f $f`
   fi
-  p=`ps ax | grep -i jboss | tr -s ' ' | cut -d ' ' -f $f | head -n 1`
-  test $PID -eq $p || PID=""
 }
 
 check_running()
@@ -57,9 +58,12 @@ case $1 in
     sudo -E -u $RUN_AS_USER $SILVERPEAS_HOME/bin/$PRG_START >& /var/log/silverpeas.log
     sleep 5s
     get_pid
-    echo $PID > $PIDFILE
-    [ "Z$PID" != "Z" ]
-    log_end_msg $?
+    if [ "Z$PID" != "Z" ]; then
+      echo $PID > $PIDFILE
+      log_success_msg "Started in background (can take several minutes)"
+    else
+      log_failure_msg
+    fi
     ;;
   stop)
     log_daemon_msg "Stopping $NAME"

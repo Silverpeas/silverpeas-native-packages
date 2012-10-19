@@ -1,6 +1,6 @@
 Source: silverpeas
-Section: devel
-Priority: extra
+Section: web
+Priority: optional
 Maintainer: Silverpeas Development Team <silverpeas-dev@googlegroups.com>
 Homepage: http://www.silverpeas.org/
 
@@ -8,4 +8,14 @@ Package: silverpeas
 Architecture: all
 Depends: java2-runtime, sudo, postgresql, openoffice.org | libreoffice
 Suggests: default-jre-headless
-Description: Open platform to create a collaborative web site.
+Description: Silverpeas is an open source web portal providing useful tools and
+ applications to facilitate the collaboration between teams and individuals
+ within an organization or an association. It features:
+ * Document Management
+ * Collaborative Management
+ * Knowledge Management
+ * Content Management
+ * Social Network
+ * Gallery
+ * Connectors to data sources
+ * and many other built-in applications
