@@ -16,7 +16,8 @@ print_usage()
 If the package release isn't set, then it is set at 1 by default
 with:
   deb 	build a DEB package of Silverpeas
-  rpm 	build a RPM package of Silverpeas"
+  rpm 	build a RPM package of Silverpeas
+  all   build both a DEB and a RPM packages of Silverpeas"
 }
 
 fetch_sources()
@@ -48,6 +49,10 @@ case "$1" in
     ;;
   "rpm")
     ./build-rpm.sh ${VER} ${PKG_VER}
+    ;;
+  "all")
+    ./build-deb.sh ${VER} ${PKG_VER}
+    ./build-rpm.sh ${VER} ${PGG_VER}
     ;;
   *)
     print_usage
