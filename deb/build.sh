@@ -17,7 +17,7 @@ PKG_VER=$2
 test "Z$PKG_VER" == "Z" && PKG_VER=1
 
 ROOT=`pwd`/tmp
-SILVERPEAS_HOME=${ROOT}/opt/silverpeas
+export SILVERPEAS_HOME=${ROOT}/opt/silverpeas
 JBOSS_HOME=${SILVERPEAS_HOME}/jboss-6.1.0.Final
 SILVERPEAS_DATA=${ROOT}/var/data/silverpeas
 SILVERPEAS_DOC=${ROOT}/usr/share/doc/silverpeas
