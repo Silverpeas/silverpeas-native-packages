@@ -72,10 +72,13 @@
             <p>or: </p><div class="source"><pre class="prettyprint">
 service silverpeas start</pre></div>
             <p>Since Silverpeas depends on <b>PostgreSQL</b> the installation will also install the PostgreSQL database system on your machine and it will setup it for Silverpeas. In the case the PostgreSQL setting for Silverpeas failed, you can do it manually by following the steps as described in the <a href="http://wiki.postgresql.org/wiki/Detailed_installation_guides" >documentation here</a>.</p>
+            <p>When updating Silverpeas, whereas the packages take into account Silverpeas can be in running, we recommand to stop it before any update.</p>
           </div>
           <div class="section"><h2>Debian-based GNU/Linux distributions<a name="Debian-based_Linux_distributions"></a></h2>
-            <div class="section"><h3>APT<a name="APT"></a></h3>
-              <p>Add the following entry in your <i>/etc/apt/sources.list</i>: </p><div class="source"><pre class="prettyprint linenums">deb http://www.silverpeas.org/repo/deb binary/</pre></div>
+            <div class="section"><h3>APT repository<a name="APT"></a></h3>
+              <p>We provide an APT repository from which you can install and update Silverpeas. The available packages were tested on Debian 6.0 and on Ubuntu 12.04 server. Nevertheless, and unlike the RPM-based
+              distributions, as Debian-based distributions are all built upon Debian and use the same base packages repositories, it is expected the Silverpeas package can be installed on all of them.</p>
+              <p>Add the following entry in your <i>/etc/apt/sources.list</i>: </p><div class="source"><pre class="prettyprint linenums">deb http://www.silverpeas.org/repo/debian binary/</pre></div>
               <p>Update your local package index and install Silverpeas:  
               </p><div class="source"><pre class="prettyprint">
 sudo apt-get update
