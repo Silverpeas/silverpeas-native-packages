@@ -1,5 +1,4 @@
-debian/
-rpm/
 debian/binary/
-rpm/repodata/
-rpm/noarch/
+rpm/*/**/repodata/
+rpm/*/**/noarch/
+rpm/*/**/silverpeas.repo
