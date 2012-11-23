@@ -75,6 +75,19 @@ service silverpeas start</pre></div>
             <p>When updating Silverpeas, whereas the packages take into account Silverpeas can be in running, we recommand to stop it before any update.</p>
           </div>
           <div class="section"><h2>Debian-based GNU/Linux distributions<a name="Debian-based_Linux_distributions"></a></h2>
+          <p>
+            Since the version 5.11, Silverpeas recommends the tools ImageMagick, Ghostscript, and SWFTools. They provide to Silverpeas the functionality to preview and to visualize the document content (whatever its format). They aren't required to run and to use Silverpeas, they are just recommendation as they enhance the user experience with Silverpeas. The package SWFTools is officially provided only since Ubuntu 12.10 and with the next stable release of Debian. For Ubuntu 12.04 and Debian 6.0, it can be found in the non-official <a href="http://www.ubuntugeek.com/how-to-install-swftools-in-ubuntu-12-0411-10-using-ppa.html">launchpad guilhem-fr</a>. To add this repository with Ubuntu:
+          </p>
+           <div class="source"><pre class="prettyprint">sudo add-apt-repository ppa:guilhem-fr/swftools</pre></div>
+           <p>To add this repository with Debian 6.0, first edit the /etc/apt/sources.list file and add the following line:</p>
+           <div class="source"><pre class="prettyprint">
+deb http://ppa.launchpad.net/guilhem-fr/swftools/ubuntu oneiric main
+deb-src http://ppa.launchpad.net/guilhem-fr/swftools/ubuntu oneiric main</pre></div>
+           <p>then import the PGP key with which the packages in this repository are signed:</p>
+           <div class="source"><pre class="prettyprint">
+gpg --keyserver pgpkeys.mit.edu --recv-key E429E19D97F87FBF
+gpg -a --export E429E19D97F87FBF | sudo apt--key add -</pre></div>
+
             <div class="section"><h3>APT repository<a name="APT"></a></h3>
               <p>We provide an APT repository from which you can install and update Silverpeas. The available packages were tested on Debian 6.0 and on Ubuntu 12.04 server. Nevertheless, and unlike the RPM-based
               distributions, as Debian-based distributions are all built upon Debian and use the same base packages repositories, it is expected the Silverpeas package can be installed on all of them.</p>
@@ -86,10 +99,13 @@ sudo apt-get install silverpeas</pre></div>
             </div>
           </div>
           <div class="section"><h2>RPM-based GNU/Linux distributions: RedHat, CentOS, and Fedora<a name="RPM-based_Linux_distributions"></a></h2>
-            <p>Silverpeas requires the latest Java 1.6.0 to run; it doesn't support yet Java 1.7.0. As in recent RPM-based GNU/Linux distribution, it is no longer provided, it is no more defined as a requirement in the Silverpeas RPM. Thus, you have to download it from the <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk6u35-downloads-1836443.html">Oracle website</a> and manually install it on your system. Once done, check the output of the command:
+            <div class="section"><h3>Requirements<a name="REQUIRE"></a></h3>
+            <p>Silverpeas requires the latest Java 1.6.0 to run; it doesn't support yet Java 1.7.0. As in recent RPM-based GNU/Linux distribution, it is no longer provided, it is then no more defined as a requirement in the Silverpeas RPM. Thus, you have to download it from the <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk6u35-downloads-1836443.html">Oracle website</a> and manually install it on your system. Once done, check the output of the command:
             <div class="source"><pre class="prettyprint">java -version</pre></div>
             If the current version isn't of type 1.6.0, then the java alternative wasn't set by the java installation and you have to do it also manually. For example:
             <div class="source"><pre class="prettyprint">update-alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_35/bin/java 20000</pre></div>
+              <p>Since the version 5.11, Silverpeas recommends the tools ImageMagick, Ghostscript, and SWFTools. They provide to Silverpeas the functionality to preview and to visualize the document content (whatever its format). Although they are defined as a requirement in the RPM packages, they aren't in fact required to run and to use Silverpeas, they are just recommendation as they enhance the user experience with Silverpeas. The package SWFTools isn't provided by the official repositories of both CentOS, RHEL, and Fedora. For CentOS and RHEL, as there is no tiers-party repository providing them, we make them available in our own repositories (you can find them also in <a href="http://pkgs.repoforge.org/swftools/">RPM Repo Forge</a>). For Fedora, you will find them in the RPM Fusion repositories. To enable access to the RPM Fusion repository, use the following command for Fedora:</p>
+              </p><div class="source"><pre class="prettyprint">su -c 'yum localinstall --nogpgcheck http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-stable.noarch.rpm http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-stable.noarch.rpm'</pre></div>
             <div class="section"><h3>RHEL 5.8 and CentOS 5.8<a name="RHEL_5"></a></h3>
               <p>Add repository: </p><div class="source"><pre class="prettyprint linenums">sudo wget -O /etc/yum.repos.d/silverpeas.repo http://www.silverpeas.org/repo/rpm/rhel/5.x/silverpeas.repo</pre></div>
               <p>Install Silverpeas: 

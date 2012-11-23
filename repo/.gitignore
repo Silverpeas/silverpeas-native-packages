@@ -1,3 +1,5 @@
-deb/binary/
+debian/
+rpm/
+debian/binary/
 rpm/repodata/
 rpm/noarch/

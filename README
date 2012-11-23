@@ -2,21 +2,25 @@ This project aims to deliver Silverpeas within some GNU/Linux distribution
 specific packages:
 * a DEB package for Debian-based GNU/Linux distribution,
 * and a RPM package for each major RPM-based distribution (RedHat, Fedora,
-CentOS, and OpenSUSE).
+and CentOS).
 
 For doing, it provides shell scripts to build theses packages. The build of a
-RPM-based package requires to be done on the targeted RPM-based distribution.
-For example, the package for Fedora has to be build on a Fedora OS.
-The build of a Debian package can be done in any GNU/Linux systems having
-the debian packages building utilities.
+package of whatever GNU/Linux distribution can be done in any system having 
+the required packages building utilities:
+* to build a DEB package: build-essential or dpkg development tool and fakeroot,
+* to build a RPM package: rpmbuild and createrepo.
+The shell scripts can generate a package for each supported GNU/Linux
+distribution.
 
 The main script is build.sh and it accepts as parameters the package to make
-(deb or rpm) and the version number of Silverpeas to build.
+(deb or rpm), the version number of Silverpeas to build and, optionally, the
+package release number for this Silverpeas version.
 It first downloads the Silverpeas installer and the JBoss application server
 distribution into the files/ directory so that they can be used by any
 packaging build.
 It then delegates the build to a more specific script: build-deb.sh for making a
-DEB package or build-rpm.sh for making a RPM package.
+DEB package or build-rpm.sh for making a RPM package for each supported RPM-based
+GNU/Linux distribution.
 
 Specific packaging instructions and Silverpeas setup files related to a
 GNU/Linux distribution type (Debian or RPM based distribution) are located in
