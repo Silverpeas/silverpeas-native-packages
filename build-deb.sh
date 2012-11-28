@@ -26,4 +26,7 @@ echo "Building DEB repository"
 mv -v deb/silverpeas*${VER}*.deb repo/debian/binary/
 cd repo/debian/
 dpkg-scanpackages binary /dev/null | gzip -9c > binary/Packages.gz
+cat > silverpeas.list << EOF
+deb http://www.silverpeas.org/repo/debian binary/
+EOF
 cd ../../

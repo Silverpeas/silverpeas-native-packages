@@ -48,7 +48,7 @@ EOF
   test $? -eq 0 || return 1
 
   cp -v rpm/RPMS/noarch/* $repo/noarch/
-  createrepo -s sha $repo/
+  createrepo $repo/
   test $? -eq 0 || return 1
 
   echo "RPM package build for $dist done"

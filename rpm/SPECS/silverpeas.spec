@@ -26,6 +26,9 @@ Provides: silverpeas
 Requires:	postgresql >= 8.2
 Requires:	postgresql-server >= 8.2
 Requires: %{openoffice}
+Requires: ImageMagick
+Requires: ghostscript
+Requires: swftools >= 0.9.1
 
 Requires(pre): %{_sbindir}/useradd
 Requires(post): %{_bindir}/sudo

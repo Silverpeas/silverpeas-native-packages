@@ -65,20 +65,61 @@
       <div class="row-fluid">
         <div id="bodyColumn"  class="span10" >
           <div class="section"><h2>Silverpeas native packages<a name="Silverpeas_native_packages"></a></h2>
+            <p>We offer you packaging of Silverpeas in both for <a href="#Debian-based_Linux_distributions">Debian distributions</a>, and for some <a href="#RPM-based_Linux_distributions">RPM-based distributions (RHEL, CentOS and Fedora)</a>.</p>
             <p>Those packages install standalone version of 
-              <a class="externalLink" href="http://www.silverpeas.org">Silverpeas</a> into <b>&quot;/opt/silverpeas&quot;</b> and provide init script, so it can be launched as: 
+              <a class="externalLink" href="http://www.silverpeas.org">Silverpeas</a> into <b>&quot;/opt/silverpeas&quot;</b> and provide a service starting script, configured to be launched at boot time. It can be launched by hand as: 
             </p><div class="source"><pre class="prettyprint">
 /etc/init.d/silverpeas start</pre></div>
             <p>or: </p><div class="source"><pre class="prettyprint">
 service silverpeas start</pre></div>
-            <p>Since Silverpeas depends on <b>PostgreSQL</b> the installation will also install the PostgreSQL database system on your machine and it will setup it for Silverpeas. In the case the PostgreSQL setting for Silverpeas failed, you can do it manually by following the steps as described in the <a href="http://wiki.postgresql.org/wiki/Detailed_installation_guides" >documentation here</a>.</p>
             <p>When updating Silverpeas, whereas the packages take into account Silverpeas can be in running, we recommand to stop it before any update.</p>
+            <div class="section"><h3>Dependency on PostgreSQL and on OpenOffice.org/LibreOffice</h3>
+            <p>Since Silverpeas depends on <b>PostgreSQL</b> and on <b>OpenOffice.org/LibreOffice</b>, the package installation will also install the PostgreSQL database system and either OpenOffice.org or LibreOffice office suite on your machine.</p>
+            <p>If not already done, it will setup PostgreSQL for Silverpeas. In the case the PostgreSQL setting for Silverpeas failed, you can do it manually by following the steps as described in the <a href="http://wiki.postgresql.org/wiki/Detailed_installation_guides" >documentation here</a>.</p>
+            <p>The package installation will install a service starting script for OpenOffice.org/LibreOffice, configured to be launched at boot time. It can be launched by hand as:</p>
+            </p><div class="source"><pre class="prettyprint">
+/etc/init.d/openoffice start</pre></div>
+            <p>or: </p><div class="source"><pre class="prettyprint">
+service openoffice start</pre></div>
+            </div>
+            <div class="section"><h3>Some recommendations on tiers-party tools</h3>
+            <p>Since the version 5.11, Silverpeas <em>recommends strongly</em> the ImageMagick, Ghostscript and SWFTools tools. They offer to Silverpeas the feature to preview and to visualize the document content (whatever its format). They aren't required to run and to use Silverpeas, they are just recommendation as they enhance the user experience with Silverpeas.</p>
+            <p>Unfortunately, the SWFTools tools suite is not provided by any official repository or, when provided, it is not complete (for example pdf2swf is missing). So, you find instructions how to install it for your GNU/Linux distribution in the corresponding section below.</p>
           </div>
           <div class="section"><h2>Debian-based GNU/Linux distributions<a name="Debian-based_Linux_distributions"></a></h2>
+            <div class="section"><h3>Recommendations<a name="Debian_recommendations"></a></h3>
+          <p>
+             <b>Take caution</b> with the official SWFTools package provided since Ubuntu 12.10 and Debian testing (future Debian stable, aka Wheezy) because it's not complete; for example, it doesn't provide the pdf2swf tool used by Silverpeas. Instead, SWFTools can be found in the non-official <a href="https://launchpad.net/~guilhem-fr">Launchpad repository of Guilhem Lettron</a>. To add this repository with Ubuntu:
+          </p>
+           <div class="source"><pre class="prettyprint">sudo add-apt-repository ppa:guilhem-fr/swftools</pre></div>
+           <p>To add this repository with Debian 6.0, first edit the /etc/apt/sources.list file and add the following lines:</p>
+           <div class="source"><pre class="prettyprint">
+deb http://ppa.launchpad.net/guilhem-fr/swftools/ubuntu oneiric main
+deb-src http://ppa.launchpad.net/guilhem-fr/swftools/ubuntu oneiric main</pre></div>
+           <p>then import the PGP key with which the packages in this repository are signed:</p>
+           <div class="source"><pre class="prettyprint">
+gpg --keyserver pgpkeys.mit.edu --recv-key E429E19D97F87FBF
+gpg -a --export E429E19D97F87FBF | sudo apt--key add -</pre></div>
+           <p>For Ubuntu &ge; 12.10 and for Debian Wheezey, you have to indicate to APT to prefere the SWFTools package from the Guilhem APT repository instead of the official one. To do this, edit the file /etc/apt/preferences and add the following lines:</p>
+           <div class="source"><pre class="prettyprint">
+Package: swftools
+Pin: origin ppa.launchpad.net
+Pin-Priority: 610
+
+Package: swftools
+Pin: origin archive.ubuntu.com
+Pin-Priority: 600
+           </pre></div>
+           <p>replace the repository URL <code>archive.ubuntu.com</code> by the one defined in your /etc/apt/sources.list for the <code>universal</code> repository.</p>
+           <p>Now, you are ready to install the recommended packages:</p>
+              </p><div class="source"><pre class="prettyprint">
+sudo apt-get install imagemagick ghostscript swftools</pre></div>
             <div class="section"><h3>APT repository<a name="APT"></a></h3>
-              <p>We provide an APT repository from which you can install and update Silverpeas. The available packages were tested on Debian 6.0 and on Ubuntu 12.04 server. Nevertheless, and unlike the RPM-based
+              <p>We provide an APT repository from which you can install and update Silverpeas. The available packages were tested on Debian 6.0, on Ubuntu 12.04 server and on Ubuntu 12.10 server. Nevertheless, and unlike the RPM-based
               distributions, as Debian-based distributions are all built upon Debian and use the same base packages repositories, it is expected the Silverpeas package can be installed on all of them.</p>
-              <p>Add the following entry in your <i>/etc/apt/sources.list</i>: </p><div class="source"><pre class="prettyprint linenums">deb http://www.silverpeas.org/repo/debian binary/</pre></div>
+              <p>Add our repository:</p>
+              <div class="source"><pre class="prettyprint linenums">sudo wget -O /etc/apt.sources.list.d/silverpeas.list http://www.silverpeas.org/repo/debian/silverpeas.list</pre></div>
+              <p>or add the following entry in your <i>/etc/apt/sources.list</i>: </p><div class="source"><pre class="prettyprint linenums">deb http://www.silverpeas.org/repo/debian binary/</pre></div>
               <p>Update your local package index and install Silverpeas:  
               </p><div class="source"><pre class="prettyprint">
 sudo apt-get update
@@ -86,10 +127,15 @@ sudo apt-get install silverpeas</pre></div>
             </div>
           </div>
           <div class="section"><h2>RPM-based GNU/Linux distributions: RedHat, CentOS, and Fedora<a name="RPM-based_Linux_distributions"></a></h2>
-            <p>Silverpeas requires the latest Java 1.6.0 to run; it doesn't support yet Java 1.7.0. As in recent RPM-based GNU/Linux distribution, it is no longer provided, it is no more defined as a requirement in the Silverpeas RPM. Thus, you have to download it from the <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk6u35-downloads-1836443.html">Oracle website</a> and manually install it on your system. Once done, check the output of the command:
+            <div class="section"><h3>Requirements<a name="RPM_Requirements"></a></h3>
+            <div class="section"><h4>Java 1.6<a name="RPM_Requirements_Java_1.6"></a></h4>
+            <p>Silverpeas requires the latest Java 1.6.0 to run; it doesn't support yet Java 1.7.0. As in recent RPM-based GNU/Linux distribution, it is no longer provided, it is then no more defined as a requirement in the Silverpeas RPM. Thus, you have to download it from the <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk6u35-downloads-1836443.html">Oracle website</a> and manually install it on your system. Once done, check the output of the command:
             <div class="source"><pre class="prettyprint">java -version</pre></div>
             If the current version isn't of type 1.6.0, then the java alternative wasn't set by the java installation and you have to do it also manually. For example:
             <div class="source"><pre class="prettyprint">update-alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_35/bin/java 20000</pre></div>
+            <div class="section"><h4>SWFTools<a name="RPM_Requirements_SWFTools"></a></h4>
+              <p>The packages of the ImageMagick, Ghostscript and SWFTools programs are defined as a requirement in the Silverpeas package. Unfortunately SWFTools isn't provided by the official repositories of both CentOS, RHEL, and Fedora. For CentOS and RHEL, as there is no tiers-party Yum repository providing them, we make them available in our own one (you can find them also in <a href="http://pkgs.repoforge.org/swftools/">RPM Repo Forge</a>). For Fedora, you will find them in the RPM Fusion Yum repositories. To enable access to the RPM Fusion Yum repository, use the following command for Fedora:</p>
+              </p><div class="source"><pre class="prettyprint">su -c 'yum localinstall --nogpgcheck http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-stable.noarch.rpm http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-stable.noarch.rpm'</pre></div>
             <div class="section"><h3>RHEL 5.8 and CentOS 5.8<a name="RHEL_5"></a></h3>
               <p>Add repository: </p><div class="source"><pre class="prettyprint linenums">sudo wget -O /etc/yum.repos.d/silverpeas.repo http://www.silverpeas.org/repo/rpm/rhel/5.x/silverpeas.repo</pre></div>
               <p>Install Silverpeas: 

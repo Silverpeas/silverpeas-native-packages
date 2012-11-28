@@ -10,14 +10,18 @@
 
 set -e
 
-print_usage()
-{
-  echo "Usage: $0 (deb|rpm) <version> [<package version>]\n\
-If the package release isn't set, then it is set at 1 by default
+read -r -d '!' USAGE <<EOF
+Usage: `basename $0` (deb|rpm) <version> [<package version>]
 with:
   deb 	build a DEB package of Silverpeas
   rpm 	build a RPM package of Silverpeas
-  all   build both a DEB and a RPM packages of Silverpeas"
+  all   build both a DEB and a RPM packages of Silverpeas!
+If the package release isn't set, then it is set at 1 by default.
+EOF
+
+print_usage()
+{
+  echo "$USAGE"
 }
 
 fetch_sources()
