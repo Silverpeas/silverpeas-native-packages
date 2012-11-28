@@ -12,11 +12,11 @@ set -e
 
 read -r -d '!' USAGE <<EOF
 Usage: `basename $0` (deb|rpm) <version> [<package version>]
-If the package release isn't set, then it is set at 1 by default
 with:
   deb 	build a DEB package of Silverpeas
   rpm 	build a RPM package of Silverpeas
   all   build both a DEB and a RPM packages of Silverpeas!
+If the package release isn't set, then it is set at 1 by default.
 EOF
 
 print_usage()

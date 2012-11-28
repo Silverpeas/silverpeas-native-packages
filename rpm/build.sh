@@ -6,12 +6,16 @@
 
 set -e
 
-if [ -z "$1" ]; then
-  echo "Usage: $0 <distribution> <version> [<package release>] \
-If the package release isn't set, then it is set at 1 by default \
-With: \
+read -r -d '!' USAGE <<EOF
+Usage: `basename $0` <distribution> <version> [<package release>]
+With:
   distribution the type of the RPM-based GNU/Linux distribution for which
-  Silverpeas has to be packaged: one of centos-5, centos-6, rhel-5, rhel-6, fedora or opensuse"
+  Silverpeas has to be packaged: one of centos-5, centos-6, rhel-5, rhel-6, or fedora
+If the package release isn't set, then it is set at 1 by default
+EOF
+
+if [ -z "$1" ]; then
+  echo "$USAGE"
   exit 1
 fi
 
