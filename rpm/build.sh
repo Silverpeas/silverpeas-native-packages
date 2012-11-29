@@ -11,7 +11,7 @@ Usage: `basename $0` <distribution> <version> [<package release>]
 With:
   distribution the type of the RPM-based GNU/Linux distribution for which
   Silverpeas has to be packaged: one of centos-5, centos-6, rhel-5, rhel-6, or fedora
-If the package release isn't set, then it is set at 1 by default
+If the package release isn't set, then it is set at 1 by default!
 EOF
 
 if [ -z "$1" ]; then
