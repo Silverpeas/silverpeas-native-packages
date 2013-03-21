@@ -42,8 +42,13 @@ else
   test $res -eq 0 && openoffice=libreoffice
 fi  
 
-# build
+# build silverpeas
 rpmbuild -ba --define="_topdir $PWD" --define="_root $PWD/tmp" --define="ver $VER" --define="rel $PKG_VER" --define="openoffice $openoffice" SPECS/silverpeas.spec
-res=$?
+
+# build datasources
+# -> PostgreSQL
+rm -rf BUILD tmp || true
+mkdir -p BUILD 
+rpmbuild -ba --define="_topdir $PWD" --define="_root $PWD/tmp" --define="ver $VER" --define="rel $PKG_VER" SPECS/silverpeas-postgresql.spec
 
 exit $?

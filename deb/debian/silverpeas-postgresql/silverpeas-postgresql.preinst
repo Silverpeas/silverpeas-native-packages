@@ -1,0 +1,24 @@
+#!/bin/sh
+
+case "$1" in
+  install|upgrade)
+    if [ -e /etc/init.d/silverpeas ]; then
+      service silverpeas status > /dev/null 2>&1
+      test $? -eq 0 && service silverpeas stop
+    fi
+    service postgresql status > /dev/null 2>&1
+    test $? -eq 0 || service postgresql start
+    ;;
+
+  abort-upgrade)
+    ;;   
+
+  *)
+    echo "preinst called with unknown argument '$1'" >&2
+    exit 1
+    ;;
+esac
+
+#DEBHELPER#
+  
+exit 0

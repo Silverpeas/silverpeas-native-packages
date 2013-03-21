@@ -11,7 +11,7 @@
 set -e
 
 read -r -d '!' USAGE <<EOF
-Usage: `basename $0` (deb|rpm) <version> [<package version>]
+Usage: `basename $0` (deb|rpm|all) <version> [<package version>]
 with:
   deb 	build a DEB package of Silverpeas
   rpm 	build a RPM package of Silverpeas
@@ -56,7 +56,7 @@ case "$1" in
     ;;
   "all")
     ./build-deb.sh ${VER} ${PKG_VER}
-    ./build-rpm.sh ${VER} ${PGG_VER}
+    ./build-rpm.sh ${VER} ${PKG_VER}
     ;;
   *)
     print_usage
