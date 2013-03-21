@@ -24,6 +24,9 @@ RUN_AS_USER=silverpeas
 # source function library
 . /etc/rc.d/init.d/functions
 
+OPTIONS="-headless -nodefault -accept='socket,host=localhost,port=8100;urp'"
+test -e /usr/bin/libreoffice && OPTIONS="--headless --nodefault --accept='socket,host=localhost,port=8100;urp'"
+
 rh_status()
 {
   do_status > /dev/null 2>&1
@@ -32,9 +35,9 @@ rh_status()
 do_start()
 {
   echo -n $"Starting $NAME: "
-  daemon --user $RUN_AS_USER --pidfile $PIDFILE "$DAEMON -headless -nodefault -accept='socket,host=localhost,port=8100;urp'&"
+  daemon --user $RUN_AS_USER --pidfile $PIDFILE "$DAEMON $OPTIONS&"
   echo
-  sleep 1s
+  sleep 5s
   pidof soffice.bin >& /dev/null
   test $? -eq 0 && echo `pidof soffice.bin` > $PIDFILE
 }

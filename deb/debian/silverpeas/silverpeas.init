@@ -21,21 +21,27 @@ RUN_AS_USER=silverpeas
 
 . /lib/lsb/init-functions
 
-get_pid() {
+get_pid()
+{
   PID=
   pj=`pidof java`
   test $? -eq 0 || return 1
-  f=1
-  PID=`ps ax | grep $pj | grep silverpeas | tr -s ' ' | cut -d ' ' -f $f`
-  if [ "Z$PID" = "Z" ]; then
-    f=2
-    PID=`ps ax | grep $pj | grep silverpeas | tr -s ' ' | cut -d ' ' -f $f`
-  fi
+  for pid in $pj; do
+    PID=`ps ax | grep $pid | grep silverpeas | tr -s ' ' | cut -d ' ' -f 1`
+    test "Z$PID" = "Z" && PID=`ps ax | grep $pid | grep silverpeas | tr -s ' ' | cut -d ' ' -f 2`
+    test "Z$PID" != "Z" && break
+  done
+}
+
+status_of_service()
+{
+  get_pid
+  test "Z$PID" != "Z" && return 0 || return 1
 }
 
 check_running()
 {
-  status_of_proc -p $PIDFILE java $NAME &> /dev/null
+  status_of_service
   if [ $? -ne 0 ]; then
     log_action_msg "Silverpeas no running. Nothing to do"
     exit 0
@@ -44,7 +50,7 @@ check_running()
 
 check_not_running()
 {
-  status_of_proc -p $PIDFILE java $NAME &> /dev/null
+  status_of_service
   if [ $? -eq 0 ]; then
     log_action_msg "Silverpeas running. Nothing to do"
     exit 0
@@ -57,9 +63,8 @@ case $1 in
     check_not_running
     sudo -E -u $RUN_AS_USER $SILVERPEAS_HOME/bin/$PRG_START >& /var/log/silverpeas.log
     sleep 5s
-    get_pid
-    if [ "Z$PID" != "Z" ]; then
-      echo $PID > $PIDFILE
+    status_of_service
+    if [ $? -eq 0 ]; then
       log_success_msg "Started in background (can take several minutes)"
     else
       log_failure_msg
@@ -78,7 +83,13 @@ case $1 in
     log_end_msg 0
     ;;
   status)
-    status_of_proc -p $PIDFILE java $NAME
+    status_of_service
+    if [ $? -eq 0 ]; then
+      log_success_msg "$NAME is running"
+    else
+      log_failure_msg "$NAME is not running"
+      exit 1
+    fi
     ;;
   *)
     log_action_msg "Usage: /etc/init.d/$NAME {start|stop|status}"

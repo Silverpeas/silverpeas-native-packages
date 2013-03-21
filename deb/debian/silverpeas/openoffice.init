@@ -20,19 +20,23 @@ DAEMON=/usr/lib/$PRG_NAME/program/soffice.bin
 PIDFILE=/var/run/$PRG_NAME.pid
 RUN_AS_USER=silverpeas
 
+OPTIONS="-headless -nodefault -accept='socket,host=localhost,port=8100;urp'"
+test "$PRG_NAME" = "libreoffice" && OPTIONS="--headless --nodefault --accept='socket,host=localhost,port=8100;urp'"
+
 . /lib/lsb/init-functions
 
 case $1 in
   start)
     log_daemon_msg "Starting $NAME as a daemon"
-    start-stop-daemon --start --quiet -c $RUN_AS_USER --background --pidfile $PIDFILE --exec $DAEMON -- -headless -nodefault -accept='socket,host=localhost,port=8100;urp'
-    sleep 1s
+    start-stop-daemon --start --quiet -c $RUN_AS_USER --background --pidfile $PIDFILE --exec $DAEMON -- $OPTIONS
+    sleep 5s
     pid=`pidof soffice.bin` && echo $pid > $PIDFILE
     log_end_msg $?
     ;;
   stop)
     log_daemon_msg "Stopping $NAME as a daemon"
     start-stop-daemon --stop --quiet -c $RUN_AS_USER --signal 15 --pidfile $PIDFILE
+    sleep 5s
     pid=`pidof soffice.bin`
     [ $? -ne 0 ]
     log_end_msg $?

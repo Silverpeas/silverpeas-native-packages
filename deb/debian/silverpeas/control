@@ -6,7 +6,7 @@ Homepage: http://www.silverpeas.org/
 
 Package: silverpeas
 Architecture: all
-Depends: java6-runtime, sudo, postgresql (>= 8.2), openoffice.org | libreoffice
+Depends: java6-runtime, sudo, silverpeas-datasource, openoffice.org | libreoffice
 Recommends: imagemagick, ghostscript, swftools (>= 0.9.1)
 Suggests: java6-runtime-headless
 Description: Silverpeas is an open source web portal providing useful tools and

@@ -65,7 +65,7 @@ fi
 mkdir rpm/SOURCES
 cp -v files/* rpm/SOURCES/
 cp -v rpm/*.init rpm/SOURCES/
-
+cp -rv scripts rpm/SOURCES/
 
 # for SNAPSHOT version, the packaging doesn't support the '-' character in the version
 # so we replace it by the dot and change accordingly the silverpeas installer file name.
