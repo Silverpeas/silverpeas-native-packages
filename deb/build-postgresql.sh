@@ -16,7 +16,7 @@ VER=$1
 PKG_VER=$2
 test "Z$PKG_VER" == "Z" && PKG_VER=1
 
-SILVERPEAS_PKG=debian/silverpeas-postgresql
+SILVERPEAS_POSTGRES_PKG=debian/silverpeas-postgresql
 
 ROOT=`pwd`/tmp
 export SILVERPEAS_HOME=${ROOT}/opt/silverpeas
@@ -52,16 +52,19 @@ mkdir -p ${SILVERPEAS_HOME}/setup/settings
 cp ../files/config-postgresql.properties ${SILVERPEAS_HOME}/setup/settings/config-datasource.properties
 
 # preinst, postinst, prerm and postrm
-cp -T ${SILVERPEAS_PKG}/silverpeas-postgresql.preinst ${ROOT}/DEBIAN/preinst
+cp -T ${SILVERPEAS_POSTGRES_PKG}/silverpeas-postgresql.preinst ${ROOT}/DEBIAN/preinst
 chmod 755 ${ROOT}/DEBIAN/preinst
-cp -T ${SILVERPEAS_PKG}/silverpeas-postgresql.postinst ${ROOT}/DEBIAN/postinst
+cp -T ${SILVERPEAS_POSTGRES_PKG}/silverpeas-postgresql.postinst ${ROOT}/DEBIAN/postinst
 chmod 755 ${ROOT}/DEBIAN/postinst
-cp -T ${SILVERPEAS_PKG}/silverpeas-postgresql.prerm ${ROOT}/DEBIAN/prerm
+cp -T ${SILVERPEAS_POSTGRES_PKG}/silverpeas-postgresql.prerm ${ROOT}/DEBIAN/prerm
 chmod 755 ${ROOT}/DEBIAN/prerm
-cp -T ${SILVERPEAS_PKG}/silverpeas-postgresql.postrm ${ROOT}/DEBIAN/postrm
+cp -T ${SILVERPEAS_POSTGRES_PKG}/silverpeas-postgresql.postrm ${ROOT}/DEBIAN/postrm
 chmod 755 ${ROOT}/DEBIAN/postrm
 
-dpkg-gencontrol -v"${VER}-${PKG_VER}" -c${SILVERPEAS_PKG}/control -Ptmp
+
+cp -f ${SILVERPEAS_POSTGRES_PKG}/control debian/control
+dpkg-gencontrol -v"${VER}-${PKG_VER}" -c${SILVERPEAS_POSTGRES_PKG}/control -Ptmp
+rm -f debian/control
 
 fakeroot dpkg-deb -b ${ROOT} silverpeas-postgresql_${VER}-${PKG_VER}_all.deb
 

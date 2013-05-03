@@ -130,7 +130,9 @@ chmod 755 ${ROOT}/DEBIAN/prerm
 cp -T ${SILVERPEAS_PKG}/silverpeas.postrm ${ROOT}/DEBIAN/postrm
 chmod 755 ${ROOT}/DEBIAN/postrm
 
+cp -f ${SILVERPEAS_PKG}/control debian/control
 dpkg-gencontrol -v"${VER}-${PKG_VER}" -c${SILVERPEAS_PKG}/control -Ptmp
+rm -f debian/control
 
 fakeroot dpkg-deb -b ${ROOT} silverpeas_${VER}-${PKG_VER}_all.deb
 
