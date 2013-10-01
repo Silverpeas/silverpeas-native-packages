@@ -55,6 +55,18 @@ fi
 if [ $1 -eq 1 ]; then
   # this is a first installation as opposed to upgrade: setup postgresql if not already done
 
+  # check maximum shared memory for PostgreSQL
+  shmmax=`cat /proc/sys/kernel/shmmax`
+  if [ $shmmax -lt 134217728 ]; then
+    grep kernel.shmmax /etc/sysctl.conf > /dev/null 2>&1
+    if [ $? -eq 0 ]; then
+      sed 's/kernel.shmmax.*/kernel.shmmax = 134217728/g' /etc/sysctl.conf > /etc/sysctl.conf.new
+      mv /etc/sysctl.conf.new /etc/sysctl.conf
+    else
+      echo 'kernel.shmmax = 134217728' >> /etc/sysctl.conf
+    fi
+  fi
+
   # init postgresql if not yet 
   hba_path=/var/lib/pgsql/data/pg_hba.conf
   test -f $hba_path || /sbin/service postgresql initdb

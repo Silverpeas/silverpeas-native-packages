@@ -2,6 +2,18 @@
 
 case "$1" in
     configure)
+      echo "Check maximum shared memory for PostgreSQL..."
+      shmmax=`cat /proc/sys/kernel/shmmax`
+      if [ $shmmax -lt 134217728 ]; then
+        grep kernel.shmmax /etc/sysctl.conf > /dev/null 2>&1
+        if [ $? -eq 0 ]; then
+          sed 's/kernel.shmmax.*/kernel.shmmax = 134217728/g' /etc/sysctl.conf > /etc/sysctl.conf.new
+          mv /etc/sysctl.conf.new /etc/sysctl.conf
+        else
+          echo 'kernel.shmmax = 134217728' >> /etc/sysctl.conf
+        fi
+      fi
+
       hba_path=`find /etc/postgresql -name pg_hba.conf`
       restart=0
       echo "PostgreSQL securing..."
