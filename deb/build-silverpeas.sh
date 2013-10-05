@@ -32,16 +32,20 @@ mkdir -p ${SILVERPEAS_DATA}/import
 mkdir -p ${SILVERPEAS_DOC}
 
 # changelog
-DATE=`date -R`
-
-echo "silverpeas (${VER}) stable; urgency=low
+test -e debian/changelog || touch debian/changelog
+res=0
+grep "silverpeas (${VER})" debian/changelog >& /dev/null || res=1
+if [ $res -ne 0 ]; then
+  DATE=`date -R`
+  echo "silverpeas (${VER}) stable; urgency=low
 
   * See the release note in https://www.silverpeas.org/docs/core/releasenotes.html for more details
-    about the ${VERS} release.
+    about the ${VER} release.
 
  -- Silverpeas Development Team <silverpeas-dev@googlegroups.com>  ${DATE}
 
 " | cat - debian/changelog > /tmp/changelog && mv /tmp/changelog debian/changelog
+fi
 
 # prepare silverpeas
 tar xzf ../files/silverpeas-${VER}-jboss6.tar.gz

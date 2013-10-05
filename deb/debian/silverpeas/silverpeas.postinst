@@ -3,6 +3,7 @@
 case "$1" in
     configure)
         if ! id silverpeas > /dev/null 2>&1 ; then
+            echo "Create the user silverpeas..."
             useradd -d /opt/silverpeas -r -s /bin/bash silverpeas
         fi
 

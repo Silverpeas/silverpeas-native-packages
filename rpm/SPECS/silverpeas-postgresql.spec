@@ -53,7 +53,8 @@ if [ $? -eq 0 ]; then
   test $? -eq 0 && /sbin/service silverpeas stop
 fi
 if [ $1 -eq 1 ]; then
-  # this is a first installation as opposed to upgrade: setup postgresql if not already done
+  # this is a first installation as opposed to upgrade: create the user silverpeas and setup postgresql if not already done
+  test `id silverpeas > /dev/null 2>&1` || /usr/sbin/useradd -s /bin/bash -r -d "/opt/silverpeas" silverpeas &>/dev/null || :
 
   # check maximum shared memory for PostgreSQL
   shmmax=`cat /proc/sys/kernel/shmmax`
@@ -61,10 +62,12 @@ if [ $1 -eq 1 ]; then
     grep kernel.shmmax /etc/sysctl.conf > /dev/null 2>&1
     if [ $? -eq 0 ]; then
       sed 's/kernel.shmmax.*/kernel.shmmax = 134217728/g' /etc/sysctl.conf > /etc/sysctl.conf.new
+      cp /etc/sysctl.conf /etc/sysctl.conf.prev
       mv /etc/sysctl.conf.new /etc/sysctl.conf
     else
       echo 'kernel.shmmax = 134217728' >> /etc/sysctl.conf
     fi
+    /sbin/sysctl -p /etc/sysctl.conf
   fi
 
   # init postgresql if not yet 
@@ -151,6 +154,8 @@ if [ $1 -eq 0 ] ; then
   hba_path=/var/lib/pgsql/data/pg_hba.conf
   if [ -f $hba_path ]; then
     echo "Database and user removing for Silverpeas..."
+    /sbin/service postgresql status > /dev/null 2>&1
+    test $? -eq 0 || /sbin/service postgresql start
     echo "DROP DATABASE silverpeas; DROP USER silverpeas" | sudo -E -u postgres psql -l -f -
     sed "s/^host[ \t]*silverpeas[ \t]*silverpeas[ \t]*[(127.0.0.1\/32)(::1\/128)]*[ \t]*md5//" $hba_path > /tmp/pg_hba.conf
     sudo -E -u postgres cp /tmp/pg_hba.conf $hba_path

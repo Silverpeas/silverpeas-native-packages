@@ -1,6 +1,7 @@
 tmp/
 debian/changelog
 debian/files
+debian/control
 silverpeas*.tar.gz
 jboss*.zip
 silverpeas*.deb
