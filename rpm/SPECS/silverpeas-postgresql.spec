@@ -80,8 +80,7 @@ if [ $1 -eq 1 ]; then
   LANG=C chkconfig --list | grep postgresql | grep on >& /dev/null
   test $? -eq 0 || chkconfig postgresql on
 
-  /sbin/service postgresql status > /dev/null 2>&1
-  test $? -eq 0 || /sbin/service postgresql start
+  /sbin/service postgresql restart > /dev/null 2>&1
 fi
 
 exit 0
@@ -116,6 +115,9 @@ EOF
     restart=1
   fi
 
+  # restart PostgreSQL in order to apply the changes in the pg_hba.conf configuration file
+  test $restart -eq 1 && /sbin/service postgresql restart
+
   # update the database connection properties for Silverpeas
   sudo -E -u postgres psql -c 'select * from pg_user' | grep silverpeas > /dev/null
   if [ $? -ne 0 ]; then
@@ -134,9 +136,6 @@ EOF
       sed "s/^DB_PASSWD=.*/DB_PASSWD=$SILVER_PWD/g" /opt/silverpeas/setup/settings/config-datasource.properties > /tmp/config-datasource.properties && mv /tmp/config-datasource.properties /opt/silverpeas/setup/settings/config-datasource.properties
     fi
   fi
-
-  # restart PostgreSQL in order to apply the changes in the pg_hba.conf configuration file
-  test $restart -eq 1 && /sbin/service postgresql restart
 fi
 exit 0
 
