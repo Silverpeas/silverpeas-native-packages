@@ -57,10 +57,8 @@ check_not_running()
   fi
 }
 
-case $1 in
-  start)
-    log_daemon_msg "Starting $NAME"
-    check_not_running
+start_silverpeas()
+{
     sudo -E -u $RUN_AS_USER $SILVERPEAS_HOME/bin/$PRG_START >& /var/log/silverpeas.log
     sleep 5s
     status_of_service
@@ -69,10 +67,10 @@ case $1 in
     else
       log_failure_msg
     fi
-    ;;
-  stop)
-    log_daemon_msg "Stopping $NAME"
-    check_running
+}
+
+stop_silverpeas()
+{
     sudo -E -u $RUN_AS_USER $SILVERPEAS_HOME/bin/$PRG_STOP >& /dev/null
     get_pid
     until [ "Z$PID" = "Z" ]; do
@@ -81,6 +79,18 @@ case $1 in
       get_pid
     done
     log_end_msg 0
+}
+
+case $1 in
+  start)
+    log_daemon_msg "Starting $NAME"
+    check_not_running
+    start_silverpeas
+    ;;
+  stop)
+    log_daemon_msg "Stopping $NAME"
+    check_running
+    stop_silverpeas
     ;;
   status)
     status_of_service
@@ -91,8 +101,13 @@ case $1 in
       exit 1
     fi
     ;;
+  restart)
+    log_daemon_msg "Restart $NAME"
+    stop_silverpeas
+    start_silverpeas
+    ;;
   *)
-    log_action_msg "Usage: /etc/init.d/$NAME {start|stop|status}"
+    log_action_msg "Usage: /etc/init.d/$NAME {start|stop|restart|status}"
     exit 1
 esac
 
