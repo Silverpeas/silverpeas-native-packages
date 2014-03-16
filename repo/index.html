@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright (C) 2000 - 2012 Silverpeas
+<!-- Copyright (C) 2000 - 2014 Silverpeas
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU Affero General Public License as
@@ -77,14 +77,14 @@
       <div id="bodyColumn">
         <div class="section">
           <h2>GNU/Linux Native Packages of Silverpeas<a name="Silverpeas_native_packages"></a></h2>
-          <p>We offer you packaging of Silverpeas in both for <a href="#Debian-based_Linux_distributions">Debian distributions</a>, and for some <a href="#RPM-based_Linux_distributions">RPM-based distributions (RHEL, CentOS and Fedora)</a>.</p>
+          <p>We offer you packaging of Silverpeas in both for <a href="#Debian-based_Linux_distributions">Debian distributions</a>, and for some <a href="#RPM-based_Linux_distributions">RPM-based server distributions (RHEL and CentOS)</a>.</p>
           <p>Those packages install standalone version of
-            <a class="externalLink" href="http://www.silverpeas.org">Silverpeas</a> into <b>&quot;/opt/silverpeas&quot;</b> and provide a service starting script, configured to be launched at boot time. It can be launched by hand as:
+            <a class="externalLink" href="http://www.silverpeas.org">Silverpeas</a> into <code>/opt/silverpeas</code> and provide a service starting script, configured to be launched at boot time. It can be launched by hand as:
           </p><div class="source"><pre class="prettyprint">
 /etc/init.d/silverpeas start</pre></div>
           <p>or: </p><div class="source"><pre class="prettyprint">
 service silverpeas start</pre></div>
-          <p>When updating Silverpeas, whereas the packages take into account Silverpeas can be in running, we recommand to stop it before any update.</p>
+          <p>When updating Silverpeas, we recommand strongly to stop it and to backup both the data (<code>/var/data/silverpeas</code>) and the database silverpeas before any update.</p>
 
           <div class="section">
             <h3>Dependency on PostgreSQL and on OpenOffice.org/LibreOffice</h3>
@@ -103,7 +103,13 @@ service openoffice start</pre>
           <div class="section">
             <h3>Some recommendations on tiers-party tools</h3>
             <p>Since the version 5.11, Silverpeas <em>recommends strongly</em> the ImageMagick, Ghostscript and SWFTools tools. They offer to Silverpeas the feature to preview and to visualize the document content (whatever its format). They aren't required to run and to use Silverpeas, they are just recommendation as they enhance the user experience with Silverpeas.</p>
-            <p>Unfortunately, the SWFTools tools suite is not provided by any official repository or, when provided, it is not complete (for example pdf2swf is missing). So, you find instructions how to install it for your GNU/Linux distribution in the corresponding section below.</p>
+            <p>Unfortunately, the SWFTools tools suite is not provided by any official repository or, when provided, it is not complete (for example pdf2swf is missing). So, you'll find instructions how to install it for your GNU/Linux distribution in the corresponding section below.</p>
+          </div>
+
+          <div class="section">
+            <h3>Java</h3>
+            <p>Silverpeas is based upon the JBoss AS 6.1 that requires Java 1.6. As we have experienced some problems with OpenJDK 6, we recommend
+               strongly the distribution <a href="http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-downloads-javase6-419409.html">Oracle Java 6</a>.</p>
           </div>
         </div>
 
@@ -112,20 +118,38 @@ service openoffice start</pre>
 
           <div class="section">
             <h3>Recommendations<a name="Debian_recommendations"></a></h3>
-            <p>
-              <b>Take caution</b> with the official SWFTools package provided since Ubuntu 12.10 and Debian testing (future Debian stable, aka Wheezy) because it's not complete; for example, it doesn't provide the pdf2swf tool used by Silverpeas. Instead, SWFTools can be found in the non-official <a href="https://launchpad.net/~guilhem-fr">Launchpad repository of Guilhem Lettron</a>. To add this repository with Ubuntu:
-            </p>
-            <div class="source"><pre class="prettyprint">sudo add-apt-repository ppa:guilhem-fr/swftools</pre></div>
-            <p>To add this repository with Debian 6.0, first edit the /etc/apt/sources.list file and add the following lines:</p>
-            <div class="source"><pre class="prettyprint">
+            <div class="section">
+              <h4>Java 1.6<a name="DEB_Requirements_Java_1.6"></a></h4>
+              <p>We recommend Java from Oracle. The team <a href="https://launchpad.net/~webupd8team/+archive/java">WebUpd8</a> provides debian package for installing it in Debian-based distributions.
+               To install Oracle Java 6, first add the repository of the <i>WebUpd8</i> team:</p>
+              <div class"source"><pre class="prettyprint">sudo add-apt-repository ppa:webupd8team/java</pre></div>
+              <p>To add this repository with Debian, edit the /etc/apt/sources.list file and add the following lines:</p>
+              <div class"source"><pre class="prettyprint">
+deb http://ppa.launchpad.net/webupd8team/java/ubuntu saucy main
+deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu raring main</pre></div>
+              <p>then import the PGP key with which the packages in this repository are signed:</p>
+              <div class"source"><pre class="prettyprint">
+gpg --keyserver keyserver.ubuntu.com --recv-keys EEA14886
+gpg -a --export EEA14886 | sudo apt--key add -</pre></div>
+              <p>Once the WebUpd8 team repository added, install Java 6:</p>
+              <div class"source"><pre class="prettyprint">sudo apt-get update
+sudo apt-get install oracle-java6-installer</pre></div>
+            </div>
+            <div class="section">
+              <h4>SWFTools<a name="DEB_Requirements_SWFTools"></a></h4>
+                <p><b>Take caution</b> with the official SWFTools package provided since Ubuntu 12.10 and Debian Wheezy because it's not complete; for example, it doesn't provide the pdf2swf tool used by Silverpeas. Instead, SWFTools can be found in the non-official <a href="https://launchpad.net/~guilhem-fr">Launchpad repository of Guilhem Lettron</a>. To add this repository with Ubuntu:
+                </p>
+                <div class="source"><pre class="prettyprint">sudo add-apt-repository ppa:guilhem-fr/swftools</pre></div>
+                <p>To add this repository with Debian, edit the <code>/etc/apt/sources.list</code> file and add the following lines:</p>
+                <div class="source"><pre class="prettyprint">
 deb http://ppa.launchpad.net/guilhem-fr/swftools/ubuntu oneiric main
 deb-src http://ppa.launchpad.net/guilhem-fr/swftools/ubuntu oneiric main</pre></div>
-            <p>then import the PGP key with which the packages in this repository are signed:</p>
-            <div class="source"><pre class="prettyprint">
+                <p>then import the PGP key with which the packages in this repository are signed:</p>
+                <div class="source"><pre class="prettyprint">
 gpg --keyserver pgpkeys.mit.edu --recv-key E429E19D97F87FBF
 gpg -a --export E429E19D97F87FBF | sudo apt--key add -</pre></div>
-            <p>For Ubuntu &ge; 12.10 and for Debian Wheezey, you have to indicate to APT to prefere the SWFTools package from the Guilhem APT repository instead of the official one. To do this, edit the file /etc/apt/preferences and add the following lines:</p>
-            <div class="source"><pre class="prettyprint">
+              <p>For Ubuntu &ge; 12.10 and for Debian Wheezey, you have to indicate to APT to prefere the SWFTools package from the Guilhem APT repository instead of the official one. To do this, edit the file /etc/apt/preferences and add the following lines:</p>
+              <div class="source"><pre class="prettyprint">
 Package: swftools
 Pin: origin ppa.launchpad.net
 Pin-Priority: 610
@@ -134,19 +158,28 @@ Package: swftools
 Pin: origin archive.ubuntu.com
 Pin-Priority: 600
               </pre></div>
-            <p>replace the repository URL <code>archive.ubuntu.com</code> by the one defined in your /etc/apt/sources.list for the <code>universal</code> repository.</p>
-            <p>Now, you are ready to install the recommended packages:</p>
-            <div class="source"><pre class="prettyprint">
+              <p>replace the repository URL <code>archive.ubuntu.com</code> by the one defined in your <code>/etc/apt/sources.list</code> for the <code>universal</code> repository.</p>
+              <p>Now, you are ready to install the recommended packages:</p>
+              <div class="source"><pre class="prettyprint">
 sudo apt-get install imagemagick ghostscript swftools</pre></div>
+            </div>
           </div>
 
           <div class="section">
-            <h3>APT repository<a name="APT"></a></h3>
-            <p>We provide an APT repository from which you can install and update Silverpeas. The available packages were tested on Debian 6.0, on Ubuntu 12.04 server and on Ubuntu 12.10 server. Nevertheless, and unlike the RPM-based
-              distributions, as Debian-based distributions are all built upon Debian and use the same base packages repositories, it is expected the Silverpeas package can be installed on all of them.</p>
-            <p>Add our repository:</p>
-            <div class="source"><pre class="prettyprint linenums">sudo wget -O /etc/apt.sources.list.d/silverpeas.list http://www.silverpeas.org/repo/debian/silverpeas.list</pre></div>
-            <p>or add the following entry in your <i>/etc/apt/sources.list</i>: </p><div class="source"><pre class="prettyprint linenums">deb http://www.silverpeas.org/repo/debian binary/</pre></div>
+            <h3>The APT repositories<a name="APT"></a></h3>
+            <p>We provide an APT repository for each evolutive version of Silverpeas from which you can install and update Silverpeas: you can then find a repository for the versions 5.13, another one for the version 5.14, and so on.</p>
+            <p>By providing a different APT repository for each main version of Silverpeas, the automatic updates of Silverpeas will concern only the minor releases (bug fixes) and not the main versions;
+               this will leave you the control of the upgrade of Silverpeas to a new evolutive version or to a new major version. To upgrade to a new main version, just replace the current APT repository with the one for the main version,
+               then update your local package index and finally upgrade your system (here upgrade to the new evolutive version 5.14):</p>
+            <div class="source"><pre class="prettyprint linenums">
+sudo wget -O /etc/apt.sources.list.d/silverpeas.list http://www.silverpeas.org/repo/debian/silverpeas-5.14.list
+sudo apt-get update
+sudo apt-get upgrade</pre></div>
+            <p>The available packages were tested on Debian Squeeze (6.x) and on Debian Wheezy (7.x), on Ubuntu 12.04 LTS server and on the latest version of Ubuntu Server. Nevertheless, and unlike the RPM-based
+              distributions, as Debian-based distributions are all built upon Debian and use the same base packages repositories, we expect the Silverpeas packages can be also installed on all Debian-based distributions.</p>
+	    <p>To install Silverpeas, first choose the main version that you wish to use and then add the corresponding repository. For example, with the version 5.14:</p>
+            <div class="source"><pre class="prettyprint linenums">sudo wget -O /etc/apt.sources.list.d/silverpeas.list http://www.silverpeas.org/repo/debian/silverpeas-5.14.list</pre></div>
+            <p>or add the following entry in your <code>/etc/apt/sources.list</code> file: </p><div class="source"><pre class="prettyprint linenums">deb [arch=all] http://www.silverpeas.org/repo/debian 5.14 main</pre></div>
             <p>Update your local package index and install Silverpeas:
             </p>
             <div class="source"><pre class="prettyprint">
@@ -156,7 +189,7 @@ sudo apt-get install silverpeas</pre></div>
         </div>
 
         <div class="section">
-          <h2>RPM-based GNU/Linux distributions: RedHat, CentOS, and Fedora<a name="RPM-based_Linux_distributions"></a></h2>
+          <h2>RPM-based GNU/Linux Server distributions: RedHat and CentOS<a name="RPM-based_Linux_distributions"></a></h2>
 
           <div class="section">
             <h3>Requirements<a name="RPM_Requirements"></a></h3>
@@ -166,34 +199,39 @@ sudo apt-get install silverpeas</pre></div>
               <p>Silverpeas requires the latest Java 1.6.0 to run; it doesn't support yet Java 1.7.0. As in recent RPM-based GNU/Linux distribution, it is no longer provided, it is then no more defined as a requirement in the Silverpeas RPM. Thus, you have to download it from the <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk6u35-downloads-1836443.html">Oracle website</a> and manually install it on your system. Once done, check the output of the command:
                 <div class="source"><pre class="prettyprint">java -version</pre></div>
                 If the current version isn't of type 1.6.0, then the java alternative wasn't set by the java installation and you have to do it also manually. For example:
-                <div class="source"><pre class="prettyprint">update-alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_35/bin/java 20000</pre>
+                <div class="source"><pre class="prettyprint">
+update-alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_45/bin/java 20000
+update-alternatives --install /usr/bin/javac javac /usr/java/jdk1.6.0_45/bin/javac 20000</pre>
                 </div>
             </div>
             <div class="section">
               <h4>SWFTools<a name="RPM_Requirements_SWFTools"></a></h4>
-              <p>The packages of the ImageMagick, Ghostscript and SWFTools programs are defined as a requirement in the Silverpeas package. Unfortunately SWFTools isn't provided by the official repositories of both CentOS, RHEL, and Fedora. For CentOS and RHEL, as there is no tiers-party Yum repository providing them, we make them available in our own one (you can find them also in <a href="http://pkgs.repoforge.org/swftools/">RPM Repo Forge</a>). For Fedora, you will find them in the RPM Fusion Yum repositories. To enable access to the RPM Fusion Yum repository, use the following command for Fedora:</p>
-              <div class="source"><pre class="prettyprint">su -c 'yum localinstall --nogpgcheck http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-stable.noarch.rpm http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-stable.noarch.rpm'</pre>
+              <p>The packages of the ImageMagick, Ghostscript and SWFTools programs are defined as a requirement in the Silverpeas package. Unfortunately SWFTools isn't provided by the official repositories of both CentOS and RHEL. For CentOS and RHEL, as there is no tiers-party Yum repository providing them, we make them available in our own one (you can find them also in <a href="http://pkgs.repoforge.org/swftools/">RPM Repo Forge</a>).</p>
               </div>
             </div>
           </div>
 
           <div class="section">
-            <h3>RHEL 5.8 and CentOS 5.8<a name="RHEL_5"></a></h3>
+            <h3>The YUM repositories<a name="YUM"></a></h3>
+            <p>The RHEL and CentOs distributions, since version 5.x, uses the YUM installer to install and update the RPM packages with their dependencies from remote repositories. We provide a YUM repository
+            with each main version of Silverpeas for each major version of RHEL/CentOS: currently we provide a YUM repository for RHEL/CentOS 5 and for another one for RHEL/CentOS 6.</p>
+            <p>Each main version of Silverpeas (evolutive and major versions) are available in these repositories with a different package name as <code>silverpeas-MAIN_VERSION</code>; for example <code>silverpeas-5.14</code> for Silverpeas 5.14.
+            By defining a package name different for each main version of Silverpeas, the automatic updates of Silverpeas will concern only the minor releases (bug fixes) related to the installed main version;
+            this will leave you the control of the upgrade of Silverpeas to a new evolutive version or to a new major version. To upgrade to a new main version,
+            first backup the data (<code>/var/data/silverpeas/</code>) as well the database silverpeas, then remove the previous Silverpeas installation, install the package relative to the new main version and finally restore both the data and the database.</p>
+          </div>
+
+          <div class="section">
+            <h3>RHEL 5.10 and CentOS 5.10<a name="RHEL_5"></a></h3>
             <p>Add repository: </p><div class="source"><pre class="prettyprint linenums">sudo wget -O /etc/yum.repos.d/silverpeas.repo http://www.silverpeas.org/repo/rpm/rhel/5.x/silverpeas.repo</pre></div>
-            <p>Install Silverpeas:
-            </p><div class="source"><pre class="prettyprint">yum install silverpeas</pre></div>
+            <p>Install Silverpeas, for example Silverpeas 5.14:
+            </p><div class="source"><pre class="prettyprint">yum install silverpeas-5.14</pre></div>
           </div>
           <div class="section">
-            <h3>RHEL 6.3 and CentOS 6.3<a name="RHEL_6"></a></h3>
+            <h3>RHEL 6.5 and CentOS 6.5<a name="RHEL_6"></a></h3>
             <p>Add repository: </p><div class="source"><pre class="prettyprint linenums">sudo wget -O /etc/yum.repos.d/silverpeas.repo http://www.silverpeas.org/repo/rpm/rhel/6.x/silverpeas.repo</pre></div>
-            <p>Install Silverpeas:
-            </p><div class="source"><pre class="prettyprint">yum install silverpeas</pre></div>
-          </div>
-          <div class="section">
-            <h3>Fedora 17<a name="Fedora"></a></h3>
-            <p>Add repository: </p><div class="source"><pre class="prettyprint linenums">sudo wget -O /etc/yum.repos.d/silverpeas.repo http://www.silverpeas.org/repo/rpm/fedora/17/silverpeas.repo</pre></div>
-            <p>Install Silverpeas:
-            </p><div class="source"><pre class="prettyprint">yum install silverpeas</pre></div>
+            <p>Install Silverpeas, for example Silverpeas 5.14:
+            </p><div class="source"><pre class="prettyprint">yum install silverpeas-5.14</pre></div>
           </div>
         </div>
       </div>
@@ -203,10 +241,9 @@ sudo apt-get install silverpeas</pre></div>
 
     <footer>
       <div class="container">
-        <div class="row span12">Copyright &copy;                    2013
+        <div class="row span12">Copyright &copy;                    2014
           <a href="http://www.silverpeas.com">Silverpeas</a>.
           All Rights Reserved.
-
         </div>
       </div>
     </footer>
