@@ -22,6 +22,7 @@ fi
 DIST=$1
 VER=$2
 PKG_VER=$3
+BRANCH=`echo $VER | grep -o "[0-9]\+.[0-9]\+"`
 test "Z$PKG_VER" == "Z" && PKG_VER=1
 
 pushd $(dirname $0)
@@ -43,12 +44,12 @@ else
 fi  
 
 # build silverpeas
-rpmbuild -ba --define="_topdir $PWD" --define="_root $PWD/tmp" --define="ver $VER" --define="rel $PKG_VER" --define="openoffice $openoffice" SPECS/silverpeas.spec
+rpmbuild -ba --define="_topdir $PWD" --define="_root $PWD/tmp" --define="ver $VER" --define="rel $PKG_VER" --define="branch $BRANCH" --define="openoffice $openoffice" SPECS/silverpeas.spec
 
 # build datasources
 # -> PostgreSQL
 rm -rf BUILD tmp || true
 mkdir -p BUILD 
-rpmbuild -ba --define="_topdir $PWD" --define="_root $PWD/tmp" --define="ver $VER" --define="rel $PKG_VER" SPECS/silverpeas-postgresql.spec
+rpmbuild -ba --define="_topdir $PWD" --define="_root $PWD/tmp" --define="ver $VER" --define="rel $PKG_VER" --define="branch $BRANCH" SPECS/silverpeas-postgresql.spec
 
 exit $?

@@ -5,7 +5,7 @@
 %define		debug_package %{nil}
 %define		__os_install_post %{_dbpath}/brp-compress
 
-Name:		silverpeas-postgresql
+Name:		silverpeas-postgresql-%{branch}
 Version:	%{ver}
 Release:	%{rel}
 Summary:	Open platform to create a collaborative web site

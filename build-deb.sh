@@ -14,19 +14,22 @@ fi
 
 VER=$1
 PKG_VER=$2
+DIST=`echo $VER | grep -o "[0-9]\+.[0-9]\+"`
+REPO="repo/debian/dists/${DIST}/main/binary-all"
 
 echo "Building DEB package"
 cd deb/
 ./build.sh ${VER} ${PKG_VER}
 cd ../
-if [ ! -e "repo/debian/binary" ]; then
-	mkdir -p repo/debian/binary
+if [ ! -e "$REPO" ]; then
+	mkdir -p "$REPO"
 fi
 echo "Building DEB repository"
-mv -v deb/silverpeas*${VER}*.deb repo/debian/binary/
-cd repo/debian/
-dpkg-scanpackages binary /dev/null | gzip -9c > binary/Packages.gz
-cat > silverpeas.list << EOF
-deb http://www.silverpeas.org/repo/debian binary/
+mv -v deb/silverpeas*${VER}*.deb "$REPO"
+pushd "$REPO/../"
+dpkg-scanpackages binary-all /dev/null dists/$DIST/main/ | gzip -9c > binary-all/Packages.gz
+popd
+cat > repo/debian/silverpeas-${DIST}.list << EOF
+deb [arch=all] http://www.silverpeas.org/repo/debian ${DIST} main
 EOF
 cd ../../

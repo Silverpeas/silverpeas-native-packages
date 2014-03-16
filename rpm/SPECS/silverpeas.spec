@@ -5,7 +5,7 @@
 %define		debug_package %{nil}
 %define		__os_install_post %{_dbpath}/brp-compress
 
-Name:		silverpeas
+Name:		silverpeas-%{branch}
 Version:	%{ver}
 Release:	%{rel}
 Summary:	Open platform to create a collaborative web site
@@ -108,7 +108,7 @@ for i in ${SILVERPEAS_HOME}/bin/*.sh; do
   chmod +x $i
 done
 
-%__install -D -m0755 "%{SOURCE2}" "%{buildroot}/etc/init.d/%{name}"
+%__install -D -m0755 "%{SOURCE2}" "%{buildroot}/etc/init.d/silverpeas"
 %__install -D -m0755 "%{SOURCE3}" "%{buildroot}/etc/init.d/openoffice"
 %__install -D -m0644 "%{SOURCE4}" "%{buildroot}/etc/profile.d/silverpeas.sh"
 %__install -D -m0644 "%{SOURCE5}" "%{buildroot}/etc/profile.d/jboss.sh"
