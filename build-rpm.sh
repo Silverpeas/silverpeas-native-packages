@@ -38,7 +38,7 @@ buildrpm() {
 [silverpeas]
 name=silverpeas
 enabled=1
-autorefresh=0
+autorefresh=1
 baseurl=http://www.silverpeas.org/$repo
 gpgcheck=0
 type=rpm-md

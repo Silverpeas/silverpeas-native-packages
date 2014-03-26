@@ -63,7 +63,8 @@ start_silverpeas()
     sleep 5s
     status_of_service
     if [ $? -eq 0 ]; then
-      log_success_msg "Started in background (can take several minutes, please consult /var/log/silverpeas.log for the starting status)"
+      log_success_msg
+      log_action_msg "$NAME is starting... (cf. /var/log/silverpeas.log for the starting status)"
     else
       log_failure_msg
     fi

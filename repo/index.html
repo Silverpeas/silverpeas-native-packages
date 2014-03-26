@@ -79,12 +79,19 @@
           <h2>GNU/Linux Native Packages of Silverpeas<a name="Silverpeas_native_packages"></a></h2>
           <p>We offer you packaging of Silverpeas in both for <a href="#Debian-based_Linux_distributions">Debian distributions</a>, and for some <a href="#RPM-based_Linux_distributions">RPM-based server distributions (RHEL and CentOS)</a>.</p>
           <p>Those packages install standalone version of
-            <a class="externalLink" href="http://www.silverpeas.org">Silverpeas</a> into <code>/opt/silverpeas</code> and provide a service starting script, configured to be launched at boot time. It can be launched by hand as:
+            <a class="externalLink" href="http://www.silverpeas.org">Silverpeas</a> into <code>/opt/silverpeas</code> with the data (your data) into <code>/var/data/silverpeas</code>. They create also both a user and a group dedicated to the execution of silverpeas in a non-privileged role: <code>silverpeas</code>. So please, ensure there is not already a user and a group with this identifier. Finally they provide a service starting script, configured to be launched at boot time. It can be launched by hand as:
           </p><div class="source"><pre class="prettyprint">
 /etc/init.d/silverpeas start</pre></div>
           <p>or: </p><div class="source"><pre class="prettyprint">
 service silverpeas start</pre></div>
-          <p>When updating Silverpeas, we recommand strongly to stop it and to backup both the data (<code>/var/data/silverpeas</code>) and the database silverpeas before any update.</p>
+          <p>the starting of Silverpeas can take several minutes, depending on the resources of your machine. Once Silverpeas started, you can access it at <span>http://&lt;you server&gt;:8000/silverpeas</span>.</p>
+          <p>The installation doesn't start automatically Silverpeas, leaving you before the opportunity to make a custom configuration.</code></p>
+          <p>The log of Silverpeas is in <code>/var/log/silverpeas.log</code>.</p>
+
+          <div class="section">
+            <h3>Warning</h3>
+          <p>When updating Silverpeas, we recommand strongly to stop it and to backup both the data (<code>/var/data/silverpeas</code>) and the database silverpeas before any update, mainly when updating to a main version (evolutive or major version).</p>
+          </div>
 
           <div class="section">
             <h3>Dependency on PostgreSQL and on OpenOffice.org/LibreOffice</h3>
@@ -120,20 +127,20 @@ service openoffice start</pre>
             <h3>Recommendations<a name="Debian_recommendations"></a></h3>
             <div class="section">
               <h4>Java 1.6<a name="DEB_Requirements_Java_1.6"></a></h4>
-              <p>We recommend Java from Oracle. The team <a href="https://launchpad.net/~webupd8team/+archive/java">WebUpd8</a> provides debian package for installing it in Debian-based distributions.
-               To install Oracle Java 6, first add the repository of the <i>WebUpd8</i> team:</p>
+              <p>We recommend Java from Oracle. The team <a href="https://launchpad.net/~webupd8team/+archive/java">WebUpd8</a> provides debian package for installing it in Debian-based distributions.</p>
+              <p>To install Oracle Java 6 in Ubuntu-based distributions, first add the repository of the <i>WebUpd8</i> team:</p>
               <div class"source"><pre class="prettyprint">sudo add-apt-repository ppa:webupd8team/java</pre></div>
-              <p>To add this repository with Debian, edit the /etc/apt/sources.list file and add the following lines:</p>
+              <p>To add this repository in Debian-based distributions, edit the /etc/apt/sources.list file and add the following lines:</p>
               <div class"source"><pre class="prettyprint">
 deb http://ppa.launchpad.net/webupd8team/java/ubuntu saucy main
-deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu raring main</pre></div>
+deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu saucy main</pre></div>
               <p>then import the PGP key with which the packages in this repository are signed:</p>
               <div class"source"><pre class="prettyprint">
 gpg --keyserver keyserver.ubuntu.com --recv-keys EEA14886
 gpg -a --export EEA14886 | sudo apt--key add -</pre></div>
-              <p>Once the WebUpd8 team repository added, install Java 6:</p>
+              <p>Once the WebUpd8 team repository added, install Oracle Java 6:</p>
               <div class"source"><pre class="prettyprint">sudo apt-get update
-sudo apt-get install oracle-java6-installer</pre></div>
+sudo apt-get install oracle-java6-installer oracle-java6-set-default</pre></div>
             </div>
             <div class="section">
               <h4>SWFTools<a name="DEB_Requirements_SWFTools"></a></h4>
@@ -148,7 +155,7 @@ deb-src http://ppa.launchpad.net/guilhem-fr/swftools/ubuntu oneiric main</pre></
                 <div class="source"><pre class="prettyprint">
 gpg --keyserver pgpkeys.mit.edu --recv-key E429E19D97F87FBF
 gpg -a --export E429E19D97F87FBF | sudo apt--key add -</pre></div>
-              <p>For Ubuntu &ge; 12.10 and for Debian Wheezey, you have to indicate to APT to prefere the SWFTools package from the Guilhem APT repository instead of the official one. To do this, edit the file /etc/apt/preferences and add the following lines:</p>
+              <p>For Ubuntu &ge; 12.10 and for Debian Wheezey, you have to indicate to APT to prefere the SWFTools package from the Guilhem APT repository instead of the official one. To do this, add a file <code>swftools</code> in the directory <code>/etc/apt/preferences.d</code> with the following lines:</p>
               <div class="source"><pre class="prettyprint">
 Package: swftools
 Pin: origin ppa.launchpad.net
@@ -158,7 +165,7 @@ Package: swftools
 Pin: origin archive.ubuntu.com
 Pin-Priority: 600
               </pre></div>
-              <p>replace the repository URL <code>archive.ubuntu.com</code> by the one defined in your <code>/etc/apt/sources.list</code> for the <code>universal</code> repository.</p>
+              <p>replace the repository URL <code>archive.ubuntu.com</code> by the one defined in your <code>/etc/apt/sources.list</code> for the <code>universe</code> repository in Ubuntu and by the one for the <code>main</code> repository in Debian.</p>
               <p>Now, you are ready to install the recommended packages:</p>
               <div class="source"><pre class="prettyprint">
 sudo apt-get install imagemagick ghostscript swftools</pre></div>
@@ -172,6 +179,7 @@ sudo apt-get install imagemagick ghostscript swftools</pre></div>
                this will leave you the control of the upgrade of Silverpeas to a new evolutive version or to a new major version. To upgrade to a new main version, just replace the current APT repository with the one for the main version,
                then update your local package index and finally upgrade your system (here upgrade to the new evolutive version 5.14):</p>
             <div class="source"><pre class="prettyprint linenums">
+sudo service silverpeas stop
 sudo wget -O /etc/apt.sources.list.d/silverpeas.list http://www.silverpeas.org/repo/debian/silverpeas-5.14.list
 sudo apt-get update
 sudo apt-get upgrade</pre></div>
@@ -198,11 +206,18 @@ sudo apt-get install silverpeas</pre></div>
               <h4>Java 1.6<a name="RPM_Requirements_Java_1.6"></a></h4>
               <p>Silverpeas requires the latest Java 1.6.0 to run; it doesn't support yet Java 1.7.0. As in recent RPM-based GNU/Linux distribution, it is no longer provided, it is then no more defined as a requirement in the Silverpeas RPM. Thus, you have to download it from the <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk6u35-downloads-1836443.html">Oracle website</a> and manually install it on your system. Once done, check the output of the command:
                 <div class="source"><pre class="prettyprint">java -version</pre></div>
-                If the current version isn't of type 1.6.0, then the java alternative wasn't set by the java installation and you have to do it also manually. For example:
+                If the current version isn't of type 1.6.0, then the java alternative wasn't set by the java installation and you have to do it also manually:
                 <div class="source"><pre class="prettyprint">
-update-alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_45/bin/java 20000
-update-alternatives --install /usr/bin/javac javac /usr/java/jdk1.6.0_45/bin/javac 20000</pre>
+sudo alternatives --install /usr/bin/java java /usr/java/default/jre/bin/java 20000
+sudo alternatives --install /usr/bin/jar jar /usr/java/default/bin/jar 20000
+sudo alternatives --install /usr/bin/javac javac /usr/java/default/bin/javac 20000
+sudo alternatives --install /usr/bin/javaws javaws /usr/java/default/jre/bin/javaws 20000
+sudo alternatives --set java /usr/java/default/jre/bin/java
+sudo alternatives --set javaws /usr/java/default/jre/bin/javaws
+sudo alternatives --set javac /usr/java/default/bin/javac
+sudo alternatives --set jar /usr/java/default/bin/jar
                 </div>
+              <p>where <code>default</code> is a symlink to the installation of the Oracle Java into <code>/user/java</code> (ensure the symlink refers a version 6 of Java).
             </div>
             <div class="section">
               <h4>SWFTools<a name="RPM_Requirements_SWFTools"></a></h4>
@@ -218,12 +233,17 @@ update-alternatives --install /usr/bin/javac javac /usr/java/jdk1.6.0_45/bin/jav
             <p>Each main version of Silverpeas (evolutive and major versions) are available in these repositories with a different package name as <code>silverpeas-MAIN_VERSION</code>; for example <code>silverpeas-5.14</code> for Silverpeas 5.14.
             By defining a package name different for each main version of Silverpeas, the automatic updates of Silverpeas will concern only the minor releases (bug fixes) related to the installed main version;
             this will leave you the control of the upgrade of Silverpeas to a new evolutive version or to a new major version. To upgrade to a new main version,
-            first backup the data (<code>/var/data/silverpeas/</code>) as well the database silverpeas, then remove the previous Silverpeas installation, install the package relative to the new main version and finally restore both the data and the database.</p>
+            first backup the data (<code>/var/data/silverpeas/</code>) as well the database silverpeas, then remove the previous Silverpeas installation, install the package relative to the new main version, restore both the data and the database, customize if needed the Silverpeas configuration, then run the settings script:</p>
+          <div class="source"><pre class="prettyprint">
+cd /opt/silverpeas/bin
+./SilverpeasSettings.sh
+./dbBuilder.sh</pre></div>
           </div>
 
           <div class="section">
             <h3>RHEL 5.10 and CentOS 5.10<a name="RHEL_5"></a></h3>
-            <p>Add repository: </p><div class="source"><pre class="prettyprint linenums">sudo wget -O /etc/yum.repos.d/silverpeas.repo http://www.silverpeas.org/repo/rpm/rhel/5.x/silverpeas.repo</pre></div>
+            <p>Add repository: </p><div class="source"><pre class="prettyprint linenums">sudo wget -O /etc/yum.repos.d/silverpeas.repo http://www.silverpeas.org/repo/rpm/rhel/5.x/silverpeas.repo
+sudo yum makecache</pre></div>
             <p>Install Silverpeas, for example Silverpeas 5.14:
             </p><div class="source"><pre class="prettyprint">yum install silverpeas-5.14</pre></div>
           </div>

@@ -22,8 +22,8 @@ case "$1" in
         sudo -E -u silverpeas /opt/silverpeas/bin/SilverpeasSettings.sh
         test $? -eq 0 && sudo -E -u silverpeas /opt/silverpeas/bin/dbBuilder.sh
         chmod +x $SILVERPEAS_HOME/bin/*.sh
-        update-rc.d silverpeas defaults
         update-rc.d openoffice defaults
+        update-rc.d silverpeas defaults
         service openoffice start
     ;;
 

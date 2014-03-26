@@ -154,8 +154,8 @@ su silverpeas -c "/opt/silverpeas/bin/SilverpeasSettings.sh"
 test $? -eq 0 && su silverpeas -c "/opt/silverpeas/bin/dbBuilder.sh"
 chmod +x /opt/silverpeas/bin/*.sh
 
-chkconfig --add silverpeas
 chkconfig --add openoffice
+chkconfig --add silverpeas
 /sbin/service openoffice start
 exit 0
 
@@ -188,7 +188,7 @@ rm -rf %{buildroot}
 %defattr(0644,silverpeas,silverpeas,0755)
 /opt/silverpeas
 /var/data/silverpeas
-%attr(0755,root,root) %config /etc/init.d/silverpeas
 %attr(0755,root,root) %config /etc/init.d/openoffice
+%attr(0755,root,root) %config /etc/init.d/silverpeas
 %attr(0644,root,root) %config /etc/profile.d/silverpeas.sh
 %attr(0644,root,root) %config /etc/profile.d/jboss.sh

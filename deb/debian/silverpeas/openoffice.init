@@ -21,7 +21,7 @@ PIDFILE=/var/run/$PRG_NAME.pid
 RUN_AS_USER=silverpeas
 
 OPTIONS="-headless -nodefault -accept='socket,host=localhost,port=8100;urp'"
-test "$PRG_NAME" = "libreoffice" && OPTIONS="--headless --nodefault --accept='socket,host=localhost,port=8100;urp'"
+test "$PRG_NAME" = "libreoffice" && OPTIONS="--headless --nodefault --accept=socket,host=localhost,port=8100;urp"
 
 . /lib/lsb/init-functions
 
