@@ -30,6 +30,7 @@ mkdir -p ${ROOT}/DEBIAN
 mkdir -p ${ROOT}/opt
 mkdir -p ${SILVERPEAS_DATA}/import
 mkdir -p ${SILVERPEAS_DOC}
+chmod -R 755 ${ROOT}
 
 # changelog
 test -e debian/changelog || touch debian/changelog
