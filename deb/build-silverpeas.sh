@@ -28,6 +28,7 @@ SILVERPEAS_DOC=${ROOT}/usr/share/doc/silverpeas
 rm -rf ${ROOT}
 mkdir -p ${ROOT}/DEBIAN
 mkdir -p ${ROOT}/opt
+chmod 755 ${ROOT}
 mkdir -p ${SILVERPEAS_DATA}/import
 mkdir -p ${SILVERPEAS_DOC}
 
