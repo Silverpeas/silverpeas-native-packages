@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright (C) 2000 - 2014 Silverpeas
+<!-- Copyright (C) 2000 - 2015 Silverpeas
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU Affero General Public License as
@@ -109,7 +109,8 @@ service openoffice start</pre>
 
           <div class="section">
             <h3>Some recommendations on tiers-party tools</h3>
-            <p>Since the version 5.11, Silverpeas <em>recommends strongly</em> the ImageMagick, Ghostscript and SWFTools tools. They offer to Silverpeas the feature to preview and to visualize the document content (whatever its format). They aren't required to run and to use Silverpeas, they are just recommendation as they enhance the user experience with Silverpeas.</p>
+            <p>Since version 5.15, Silverpeas <em>requires</em> the ImageMagick software suite. It is an image handling solution that is used by Silverpeas for both document content previewing and image resizing at the fly. Without it, you won't be have any image rendering in Silverpeas.</p>
+            <p>Since version 5.11, Silverpeas <em>recommends strongly</em> the Ghostscript and SWFTools tools. They offer to Silverpeas the feature to preview and to visualize the document content (whatever its format). They aren't required to run and to use Silverpeas, they are just recommendation as they enhance the user experience with Silverpeas.</p>
             <p>Unfortunately, the SWFTools tools suite is not provided by any official repository or, when provided, it is not complete (for example pdf2swf is missing). So, you'll find instructions how to install it for your GNU/Linux distribution in the corresponding section below.</p>
           </div>
 
@@ -128,33 +129,30 @@ service openoffice start</pre>
             <div class="section">
               <h4>Java 1.6<a name="DEB_Requirements_Java_1.6"></a></h4>
               <p>We recommend Java from Oracle. The team <a href="https://launchpad.net/~webupd8team/+archive/java">WebUpd8</a> provides debian package for installing it in Debian-based distributions.</p>
-              <p>To install Oracle Java 6 in Ubuntu-based distributions, first add the repository of the <i>WebUpd8</i> team:</p>
+              <p>To install Oracle Java 6 in <strong>Ubuntu-based</strong> distributions, first add the repository of the <i>WebUpd8</i> team:</p>
               <div class"source"><pre class="prettyprint">sudo add-apt-repository ppa:webupd8team/java</pre></div>
-              <p>To add this repository in Debian-based distributions, edit the /etc/apt/sources.list file and add the following lines:</p>
+              <p>To add this repository in <strong>Debian-based</strong> distributions, edit the /etc/apt/sources.list file or creates the file <code>/etc/apt/sources.list.d/webupd8team.list</code> and add the following lines:</p>
               <div class"source"><pre class="prettyprint">
-deb http://ppa.launchpad.net/webupd8team/java/ubuntu saucy main
-deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu saucy main</pre></div>
+deb http://ppa.launchpad.net/webupd8team/java/ubuntu vivid main
+deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu vivid main</pre></div>
               <p>then import the PGP key with which the packages in this repository are signed:</p>
               <div class"source"><pre class="prettyprint">
 gpg --keyserver keyserver.ubuntu.com --recv-keys EEA14886
-gpg -a --export EEA14886 | sudo apt--key add -</pre></div>
+gpg -a --export EEA14886 | sudo apt-key add -</pre></div>
               <p>Once the WebUpd8 team repository added, install Oracle Java 6:</p>
               <div class"source"><pre class="prettyprint">sudo apt-get update
 sudo apt-get install oracle-java6-installer oracle-java6-set-default</pre></div>
             </div>
             <div class="section">
               <h4>SWFTools<a name="DEB_Requirements_SWFTools"></a></h4>
-                <p><b>Take caution</b> with the official SWFTools package provided since Ubuntu 12.10 and Debian Wheezy because it's not complete; for example, it doesn't provide the pdf2swf tool used by Silverpeas. Instead, SWFTools can be found in the non-official <a href="https://launchpad.net/~guilhem-fr">Launchpad repository of Guilhem Lettron</a>. To add this repository with Ubuntu:
-                </p>
-                <div class="source"><pre class="prettyprint">sudo add-apt-repository ppa:guilhem-fr/swftools</pre></div>
-                <p>To add this repository with Debian, edit the <code>/etc/apt/sources.list</code> file and add the following lines:</p>
+                <p><b>Take caution</b> with the official SWFTools package provided since Ubuntu 12.10 and Debian Wheezy because it's not complete; for example, it doesn't provide the pdf2swf tool used by Silverpeas. Instead, SWFTools can be found in the non-official <a href="https://launchpad.net/~guilhem-fr">Launchpad repository of Guilhem Lettron</a>. To add this repository, edit the <code>/etc/apt/sources.list</code> file or creates the file <code>/etc/apt/sources.list.d/swftools.list</code> and add the following lines:</p>
                 <div class="source"><pre class="prettyprint">
-deb http://ppa.launchpad.net/guilhem-fr/swftools/ubuntu oneiric main
-deb-src http://ppa.launchpad.net/guilhem-fr/swftools/ubuntu oneiric main</pre></div>
+deb http://ppa.launchpad.net/guilhem-fr/swftools/ubuntu quantal main
+deb-src http://ppa.launchpad.net/guilhem-fr/swftools/ubuntu quantal main</pre></div>
                 <p>then import the PGP key with which the packages in this repository are signed:</p>
                 <div class="source"><pre class="prettyprint">
 gpg --keyserver pgpkeys.mit.edu --recv-key E429E19D97F87FBF
-gpg -a --export E429E19D97F87FBF | sudo apt--key add -</pre></div>
+gpg -a --export E429E19D97F87FBF | sudo apt-key add -</pre></div>
               <p>For Ubuntu &ge; 12.10 and for Debian Wheezey, you have to indicate to APT to prefere the SWFTools package from the Guilhem APT repository instead of the official one. To do this, add a file <code>swftools</code> in the directory <code>/etc/apt/preferences.d</code> with the following lines:</p>
               <div class="source"><pre class="prettyprint">
 Package: swftools
@@ -167,7 +165,7 @@ Pin-Priority: 600
               </pre></div>
               <p>replace the repository URL <code>archive.ubuntu.com</code> by the one defined in your <code>/etc/apt/sources.list</code> for the <code>universe</code> repository in Ubuntu and by the one for the <code>main</code> repository in Debian.</p>
               <p>Now, you are ready to install the recommended packages:</p>
-              <div class="source"><pre class="prettyprint">
+              <div class="source"><pre class="prettyprint">sudo apt-get update
 sudo apt-get install imagemagick ghostscript swftools</pre></div>
             </div>
           </div>
